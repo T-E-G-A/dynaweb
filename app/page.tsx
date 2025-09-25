@@ -4,13 +4,81 @@ import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Menu, X } from "lucide-react"
+import { Menu, X, ChevronLeft, ChevronRight } from "lucide-react"
 
 export default function DynagrowthSchools() {
   const [isVisible, setIsVisible] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set())
   const sectionRefs = useRef<{ [key: string]: HTMLElement | null }>({})
+  const [highlightIndex, setHighlightIndex] = useState(0)
+  const [visibleCount, setVisibleCount] = useState(3)
+  const [isAnimating, setIsAnimating] = useState(false)
+  const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right')
+
+  const highlightImages = [
+    // Learning environment
+    "/Highlights/Learning environment/geo2.jpg",
+    "/Highlights/more images/class1.jpg",
+    "/Highlights/Learning environment/arts 3.jpg",
+    "/Highlights/Learning environment/arts 4.jpg",
+    "/Highlights/more images/class2.jpg",
+    "/Highlights/Learning environment/arts1.jpg",
+    "/Highlights/Learning environment/arts2.jpg",
+    "/Highlights/Learning environment/arts4.jpg",
+    "/Highlights/more images/class3.jpg",
+    "/Highlights/Learning environment/basic1.jpg",
+    "/Highlights/Learning environment/geo 1.jpg",
+    "/Highlights/Learning environment/pre1.jpg",
+    // Christmas party
+    "/Highlights/christmas party/IMG_3887.JPG",
+    "/Highlights/more images/class4.jpg",
+    "/Highlights/christmas party/IMG_3878.JPG",
+    "/Highlights/christmas party/IMG_3925.JPG",
+    "/Highlights/christmas party/IMG_3446.JPG",
+    "/Highlights/christmas party/IMG_3491.JPG",
+    "/Highlights/christmas party/IMG_3526.JPG",
+    "/Highlights/christmas party/IMG_3646.JPG",
+    "/Highlights/christmas party/IMG_3939.JPG",
+    "/Highlights/christmas party/IMG_3913.JPG",
+    // Airport excursion
+    "/Highlights/airport excursion/air.jpg",
+    "/Highlights/airport excursion/air1.jpg",
+    // Independence day (only img1 kept)
+    "/Highlights/independence day/independence1.jpg",
+    "/Highlights/more images/class5.jpg",
+  ]
+
+  const goPrev = () => setHighlightIndex((prev) => (prev - 1 + highlightImages.length) % highlightImages.length)
+  const goNext = () => setHighlightIndex((prev) => (prev + 1) % highlightImages.length)
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (typeof window === 'undefined') return
+      setVisibleCount(window.innerWidth >= 1024 ? 4 : 3)
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  const advance = (direction: 'next' | 'prev') => {
+    if (isAnimating) return
+    setSlideDirection(direction === 'next' ? 'right' : 'left')
+    setIsAnimating(true)
+    
+    setTimeout(() => {
+      if (direction === 'next') {
+        setHighlightIndex((prev) => (prev + 1) % highlightImages.length)
+      } else {
+        setHighlightIndex((prev) => (prev - 1 + highlightImages.length) % highlightImages.length)
+      }
+    }, 150)
+    
+    setTimeout(() => {
+      setIsAnimating(false)
+    }, 400)
+  }
 
   useEffect(() => {
     setIsVisible(true)
@@ -42,6 +110,37 @@ export default function DynagrowthSchools() {
 
   return (
     <div className="min-h-screen bg-white">
+      <style jsx>{`
+        @keyframes slideInRight {
+          0% {
+            transform: translateX(100%) scale(0.9);
+            opacity: 0;
+          }
+          50% {
+            transform: translateX(50%) scale(0.95);
+            opacity: 0.7;
+          }
+          100% {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+          }
+        }
+        
+        @keyframes slideInLeft {
+          0% {
+            transform: translateX(-100%) scale(0.9);
+            opacity: 0;
+          }
+          50% {
+            transform: translateX(-50%) scale(0.95);
+            opacity: 0.7;
+          }
+          100% {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+          }
+        }
+      `}</style>
       {/* Navigation Bar */}
       <nav
         className={`bg-white shadow-sm sticky top-0 z-50 transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"}`}
@@ -607,72 +706,64 @@ export default function DynagrowthSchools() {
             </p>
           </div>
 
-          {/* Top Row - Moving Right */}
-          <div className="mb-8 overflow-hidden">
-            <div
-              className={`flex space-x-6 transition-all duration-1000 transform ${
-                isSectionVisible("highlights") ? "translate-x-0 opacity-100 animate-slide-right" : "-translate-x-full opacity-0"
-              }`}
-              style={{ width: 'max-content' }}
-            >
-              {[
-                "/Highlights/Learning environment/geo2.jpg",
-                "/Highlights/Learning environment/arts 3.jpg",
-                "/Highlights/Learning environment/arts 4.jpg",
-                "/Highlights/Learning environment/arts1.jpg",
-                "/Highlights/Learning environment/arts2.jpg",
-                "/Highlights/Learning environment/arts4.jpg",
-                "/Highlights/Learning environment/basic1.jpg",
-                "/Highlights/Learning environment/basic2.jpg",
-                "/Highlights/Learning environment/geo 1.jpg",
-                "/Highlights/Learning environment/pre1.jpg",
-              ].map((src, i) => (
-                <div
-                  key={`top-${i}`}
-                  className="flex-shrink-0 w-64 sm:w-72 md:w-80 lg:w-96"
-                >
-                  <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
-                    <Image
-                      src={src}
-                      alt="Learning environment"
-                      width={400}
-                      height={300}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
-              ))}
+          {/* Manual Slider - shows 3-4 images with smooth slide animation */}
+          <div className={`relative max-w-7xl mx-auto transition-all duration-1000 transform ${isSectionVisible("highlights") ? "opacity-100" : "opacity-0"}`}>
+            <div className="overflow-hidden rounded-2xl">
+              <div className="flex gap-6">
+                {Array.from({ length: visibleCount }).map((_, idx) => {
+                  const imageIdx = (highlightIndex + idx) % highlightImages.length
+                  const src = highlightImages[imageIdx]
+                  const translateClass = isAnimating
+                    ? (slideDirection === 'right' ? 'translate-x-3' : '-translate-x-3')
+                    : 'translate-x-0'
+                  const opacityClass = isAnimating ? 'opacity-80' : 'opacity-100'
+                  return (
+                    <div 
+                      key={`hl-${imageIdx}-${highlightIndex}`} 
+                      className={`flex-shrink-0 w-64 sm:w-72 md:w-80 lg:w-96 transition-all duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)] ${translateClass} ${opacityClass}`}
+                      style={{ transitionDelay: `${idx * 40}ms`, willChange: 'transform, opacity' }}
+                    >
+                      <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <Image
+                          src={src}
+                          alt="Highlight"
+                          width={400}
+                          height={300}
+                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                          sizes="(min-width: 1024px) 384px, (min-width: 768px) 320px, 256px"
+                          loading="lazy"
+                          quality={70}
+                        />
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
             </div>
-          </div>
-
-          {/* Bottom Row - Moving Left */}
-          <div className="overflow-hidden">
-            <div
-              className={`flex space-x-6 transition-all duration-1000 transform ${
-                isSectionVisible("highlights") ? "translate-x-0 opacity-100 animate-slide-left" : "translate-x-full opacity-0"
-              }`}
-              style={{ width: 'max-content' }}
+            <button
+              type="button"
+              aria-label="Previous highlight"
+              onClick={() => advance('prev')}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-[#1F3A93] rounded-full p-2 shadow"
             >
-              {[6, 7, 8, 9, 10, 11, 6, 7, 8, 9].map((index, i) => (
-                <div
-                  key={`bottom-${i}`}
-                  className="flex-shrink-0 w-64 sm:w-72 md:w-80 lg:w-96"
-                >
-                  <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
-                    <Image
-                      src={`/school-highlights-and-activities-.jpg?height=300&width=400&query=school events and activities ${index}`}
-                      alt={`School event ${index}`}
-                      width={400}
-                      height={300}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="mt-3 text-center">
-                    <p className="text-sm text-[#44403D] font-nirmala">
-                      Past Event {index}
-                    </p>
-                  </div>
-                </div>
+              <ChevronLeft size={24} />
+            </button>
+            <button
+              type="button"
+              aria-label="Next highlight"
+              onClick={() => advance('next')}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-[#1F3A93] rounded-full p-2 shadow"
+            >
+              <ChevronRight size={24} />
+            </button>
+            <div className="mt-4 flex justify-center gap-2">
+              {highlightImages.map((_, idx) => (
+                <button
+                  key={idx}
+                  aria-label={`Go to slide ${idx + 1}`}
+                  onClick={() => setHighlightIndex(idx)}
+                  className={`h-2 w-2 rounded-full ${idx === highlightIndex ? 'bg-[#1F3A93]' : 'bg-gray-300'}`}
+                />
               ))}
             </div>
           </div>
