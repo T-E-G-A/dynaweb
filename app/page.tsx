@@ -490,7 +490,7 @@ export default function DynagrowthSchools() {
                   }`}
                   style={{ transitionDelay: "400ms" }}
                 >
-                  <p className="text-[#44403D] leading-relaxed font-nirmala">
+                  <p className="text-[#44403D] leading-relaxed font-nirmala text-justify">
                     At Dynagrowth Schools, we are committed to educating the total child by nurturing academic excellence, practical skills, moral values, and creativity in a safe, supportive, and community-driven environment. Our approach goes beyond the classroom, from instilling strong literacy and numeracy foundations to developing hands-on abilities and life skills that prepare students for independence, higher education, and future careers. Rooted in Jahi/Kado Kuchi, Abuja, we provide parents with access to high-quality, affordable education without having to leave their community, empowering children to learn, grow, and thrive as leaders of tomorrow.
                   </p>
                 </div>
@@ -642,9 +642,9 @@ export default function DynagrowthSchools() {
       <section
         ref={setSectionRef("mission-vision")}
         id="mission-vision"
-        className="py-16 px-4 sm:px-6 lg:px-8 bg-[#F7F6F5]"
+        className="py-20 px-4 sm:px-6 lg:px-8 bg-[#F7F6F5]"
       >
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <h2
             className={`text-4xl text-[#1F3A93] text-center mb-12 transition-all duration-1000 transform font-eras-bold ${
               isSectionVisible("mission-vision") ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
@@ -653,40 +653,57 @@ export default function DynagrowthSchools() {
             Mission & Vision
           </h2>
 
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-12 items-stretch">
+            {/* Mission */}
             <div
-              className={`transition-all duration-1000 transform ${
+              className={`bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col ${
                 isSectionVisible("mission-vision") ? "translate-x-0 opacity-100" : "-translate-x-8 opacity-0"
               }`}
               style={{ transitionDelay: "200ms" }}
             >
-              <h3 className="text-3xl text-[#1F3A93] mb-6 font-eras-bold">Mission</h3>
-              <p className="text-[#44403D] leading-relaxed mb-6 font-nirmala">
-                Our mission is to provide an accessible British curriculum to children in underserved areas of Nigeria,
-                fostering holistic growth, academic excellence, and lifelong learning. We aim to nurture confident,
-                curious, and compassionate learners by combining international standards with local values, ensuring
-                every child has the opportunity to thrive and contribute to their community.
-              </p>
-              <p className="text-[#3BB44A] text-lg font-nirmala-italic">Educating the total child.</p>
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-[#1F3A93] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                  </svg>
+                </div>
+                <h3 className="text-3xl text-[#1F3A93] font-eras-bold">Mission</h3>
+              </div>
+              <div className="flex-1 flex flex-col justify-center">
+                <p className="text-[#44403D] leading-relaxed mb-6 font-nirmala text-justify">
+                  Our mission is to deliver accessible, high-quality British education to children in underserved areas of Nigeria.
+                  We focus on holistic growth by combining strong academics, practical life skills, and moral values,
+                  ensuring every child is nurtured to thrive in their community today..
+                </p>
+                <p className="text-[#3BB44A] text-lg font-nirmala italic">Educating the total child.</p>
+              </div>
             </div>
 
+            {/* Vision */}
             <div
-              className={`border-l-2 border-[#1F3A93] pl-8 transition-all duration-1000 transform ${
+              className={`bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 flex flex-col ${
                 isSectionVisible("mission-vision") ? "translate-x-0 opacity-100" : "translate-x-8 opacity-0"
               }`}
               style={{ transitionDelay: "400ms" }}
             >
-              <h3 className="text-3xl text-[#1F3A93] mb-6 font-eras-bold">Vision</h3>
-              <p className="text-[#44403D] leading-relaxed mb-6 font-nirmala">
-                To create a nurturing environment where children in Nigerian communities can learn and grow together
-                through affordable, high-quality British education.
-              </p>
-              <br />
-                <br />
-                <br />
-              <p className="text-[#3BB44A] text-lg font-nirmala-italic">
-                Skills for today, values for life.
-              </p>
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-[#1F3A93] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                  </svg>
+                </div>
+                <h3 className="text-3xl text-[#1F3A93] font-eras-bold">Vision</h3>
+              </div>
+              <div className="flex-1 flex flex-col justify-center">
+                <p className="text-[#44403D] leading-relaxed mb-6 font-nirmala text-justify">
+                Our vision is to see every child in Nigeria empowered with the knowledge, skills, and values to succeed in
+                higher education, build independent livelihoods,
+                and become compassionate leaders who transform their communities for the future.
+                </p>
+                <p className="text-[#3BB44A] text-lg font-nirmala italic">
+                  Skills for today, values for life.
+                </p>
+              </div>
             </div>
           </div>
         </div>
