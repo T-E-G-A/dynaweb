@@ -33,6 +33,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/itc-eras-ultra" />
+      </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${nirmalaUI.variable}`}>
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />

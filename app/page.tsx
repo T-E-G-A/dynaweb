@@ -621,10 +621,10 @@ export default function DynagrowthSchools() {
               </svg>
               Excellence in Education
             </div>
-            <h2 className="text-5xl text-[#1F3A93] mb-6 font-eras-bold">
+            <h2 className="text-4xl text-[#1F3A93] mb-6 font-eras-bold">
               Academic Excellence
             </h2>
-            <p className="text-[#44403D] max-w-4xl mx-auto font-nirmala text-lg leading-relaxed">
+            <p className="text-[#44403D] max-w-4xl mx-auto font-nirmala text-md leading-relaxed">
               Our comprehensive curriculum ensures excellence across all areas, fostering well-rounded individuals prepared for future success through innovative teaching methodologies and personalized attention.
             </p>
           </div>
@@ -700,7 +700,7 @@ export default function DynagrowthSchools() {
                     <h3 className="text-2xl text-[#1F3A93] mb-4 font-eras-bold group-hover:text-[#3BB44A] transition-colors duration-300">
                       {item.title}
                     </h3>
-                    <p className="text-[#44403D] font-nirmala leading-relaxed group-hover:text-[#333] transition-colors duration-300">
+                    <p className="text-[#44403D] font-nirmala leading-relaxed text-md group-hover:text-[#333] transition-colors duration-300">
                       {item.desc}
                     </p>
                   </div>
@@ -1274,7 +1274,8 @@ export default function DynagrowthSchools() {
                 <h3 className="font-bold text-[#1F3A93] mb-2">📍 Contact Us</h3>
                 <p><strong>Dynagrowth Schools</strong></p>
                 <p>18 Ice-Block Factory Road, Kado Kuchi, Abuja</p>
-                <p>📧 dng.schools@outlook.com | 📞 +2347018647074</p>
+                <p>📧 dng.schools@outlook.com</p>
+                <p>📞 +2347018647074</p>
               </div>
             </div>
           </DialogContent>
@@ -1363,7 +1364,8 @@ export default function DynagrowthSchools() {
                 <h3 className="font-bold text-[#1F3A93] mb-2">📍 Contact Us</h3>
                 <p><strong>Dynagrowth Schools</strong></p>
                 <p>18 Ice-Block Factory Road, Kado Kuchi, Abuja</p>
-                <p>📧 dng.schools@outlook.com | 📞 +2347018647074</p>
+                <p>📧 dng.schools@outlook.com</p>
+                <p>📞 +2347018647074</p>
               </div>
             </div>
           </DialogContent>

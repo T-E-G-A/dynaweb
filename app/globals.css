@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-/* Import ITC Eras font from CDN */
-/* Removed problematic CDN import that was causing loading errors */
+/* ITC Eras family from CDN (includes Light/Demi/Ultra) */
+@import url('https://fonts.cdnfonts.com/css/itc-eras-ultra');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -41,7 +41,7 @@
   --sidebar-ring: oklch(0.708 0 0);
   /* Updated font variables with reliable fallbacks */
   --font-nirmala: "Nirmala UI", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  --font-itc-eras: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
+  --font-itc-eras: 'ITC Eras Demi','ITC Eras','ITC Eras Ultra','ITC Eras Light',"Arial Rounded MT Bold","Helvetica Rounded",Arial,sans-serif;
 }
 
 .dark {
@@ -131,17 +131,25 @@
     @apply bg-background text-foreground;
   }
 }
+/* Force all headings/titles to use the Eras-style bold font */
+@layer base {
+  h1, h2, h3, h4, h5, h6,
+  [data-slot="dialog-title"] {
+    font-family: var(--font-itc-eras);
+    font-weight: 700;
+  }
+}
 
 /* Typography utility classes following Dynagrowth brand guidelines */
 @layer utilities {
   /* Primary Fonts */
   .font-eras-bold {
-    font-family: "Eras Demi ITC", "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
+    font-family: var(--font-itc-eras);
     font-weight: 700;
   }
 
   .font-eras {
-    font-family: "Eras Demi ITC", "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
+    font-family: var(--font-itc-eras);
     font-weight: 600;
   }
 
@@ -159,7 +167,7 @@
 
   /* Legacy classes for backward compatibility */
   .font-itc-eras {
-    font-family: "Eras Demi ITC", "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
+    font-family: var(--font-itc-eras);
     font-weight: 600;
   }
 
