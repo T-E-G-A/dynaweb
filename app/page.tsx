@@ -4,9 +4,10 @@ import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Menu, X, ChevronLeft, ChevronRight } from "lucide-react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStar, faBook, faLaptop, faPalette, faTrophy, faCheck, faEye, faAward } from '@fortawesome/free-solid-svg-icons'
+import { faStar, faBook, faLaptop, faPalette, faTrophy, faCheck, faEye, faAward, faMapMarkerAlt, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { faFacebookF, faInstagram, faLinkedinIn } from '@fortawesome/free-brands-svg-icons'
 
 export default function DynagrowthSchools() {
@@ -18,6 +19,8 @@ export default function DynagrowthSchools() {
   const [visibleCount, setVisibleCount] = useState(3)
   const [isAnimating, setIsAnimating] = useState(false)
   const [slideDirection, setSlideDirection] = useState<'left' | 'right'>('right')
+  const [isTermsOpen, setIsTermsOpen] = useState(false)
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false)
 
   const highlightImages = [
     // Learning environment
@@ -58,7 +61,15 @@ export default function DynagrowthSchools() {
   useEffect(() => {
     const handleResize = () => {
       if (typeof window === 'undefined') return
-      setVisibleCount(window.innerWidth >= 1024 ? 4 : 3)
+      if (window.innerWidth >= 1280) {
+        setVisibleCount(4) // xl screens
+      } else if (window.innerWidth >= 1024) {
+        setVisibleCount(3) // lg screens
+      } else if (window.innerWidth >= 768) {
+        setVisibleCount(2) // md screens
+      } else {
+        setVisibleCount(1) // mobile
+      }
     }
     handleResize()
     window.addEventListener('resize', handleResize)
@@ -155,7 +166,7 @@ export default function DynagrowthSchools() {
       `}</style>
       {/* Navigation Bar */}
       <nav
-        className={`bg-white shadow-sm sticky top-0 z-50 transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"}`}
+        className={`bg-white shadow-sm fixed top-0 left-0 right-0 w-full z-50 transition-opacity duration-1000 ${isVisible ? "opacity-100" : "opacity-0"}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -174,35 +185,70 @@ export default function DynagrowthSchools() {
               <a
                 href="#home"
                 className="text-[#1F3A93] hover:underline hover:decoration-[#3BB44A] transition-all duration-300 font-eras"
+                onClick={(e) => {
+                  e.preventDefault()
+                  document.getElementById('home')?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                  })
+                }}
               >
                 Home
               </a>
                 <a
                   href="#about"
                   className="text-[#1F3A93] hover:underline hover:decoration-[#3BB44A] transition-all duration-300 font-eras"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    document.getElementById('about')?.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start'
+                    })
+                  }}
                 >
                   About Us
                 </a>
               <a
                 href="#schools"
                 className="text-[#1F3A93] hover:underline hover:decoration-[#3BB44A] transition-all duration-300 font-eras"
+                onClick={(e) => {
+                  e.preventDefault()
+                  document.getElementById('schools')?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                  })
+                }}
               >
                 Our Schools
               </a>
               <a
                 href="#highlights"
                 className="text-[#1F3A93] hover:underline hover:decoration-[#3BB44A] transition-all duration-300 font-eras"
+                onClick={(e) => {
+                  e.preventDefault()
+                  document.getElementById('highlights')?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                  })
+                }}
               >
                 Highlights
               </a>
               <a
                 href="#contact"
                 className="text-[#1F3A93] hover:underline hover:decoration-[#3BB44A] transition-all duration-300 font-eras"
+                onClick={(e) => {
+                  e.preventDefault()
+                  document.getElementById('contact')?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                  })
+                }}
               >
                 Contact
               </a>
               <Button className="bg-[#3BB44A] hover:bg-[#2F8E3A] text-white rounded-full px-6 py-2 transition-colors duration-300 font-nirmala uppercase font-semibold">
-                Register Your Interest
+                Get in touch
               </Button>
             </div>
 
@@ -222,35 +268,70 @@ export default function DynagrowthSchools() {
                 <a
                   href="#home"
                   className="text-[#1F3A93] hover:text-[#3BB44A] transition-all duration-300 px-4 font-eras"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setIsMobileMenuOpen(false)
+                    document.getElementById('home')?.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start'
+                    })
+                  }}
                 >
                   Home
                 </a>
                 <a
                   href="#about"
                   className="text-[#1F3A93] hover:text-[#3BB44A] transition-all duration-300 px-4 font-eras"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setIsMobileMenuOpen(false)
+                    document.getElementById('about')?.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start'
+                    })
+                  }}
                 >
                   About Us
                 </a>
                 <a
                   href="#schools"
                   className="text-[#1F3A93] hover:text-[#3BB44A] transition-all duration-300 px-4 font-eras"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setIsMobileMenuOpen(false)
+                    document.getElementById('schools')?.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start'
+                    })
+                  }}
                 >
                   Our Schools
                 </a>
                 <a
                   href="#highlights"
                   className="text-[#1F3A93] hover:text-[#3BB44A] transition-all duration-300 px-4 font-eras"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setIsMobileMenuOpen(false)
+                    document.getElementById('highlights')?.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start'
+                    })
+                  }}
                 >
                   Highlights
                 </a>
                 <a
                   href="#contact"
                   className="text-[#1F3A93] hover:text-[#3BB44A] transition-all duration-300 px-4 font-eras"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setIsMobileMenuOpen(false)
+                    document.getElementById('contact')?.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start'
+                    })
+                  }}
                 >
                   Contact
                 </a>
@@ -264,6 +345,7 @@ export default function DynagrowthSchools() {
           )}
         </div>
       </nav>
+      <div className="h-16" aria-hidden="true" />
 
       {/* Hero Section */}
       <section id="home" className="pt-0 pb-16 px-4 sm:px-6 lg:px-8 bg-white">
@@ -290,7 +372,16 @@ export default function DynagrowthSchools() {
                 className={`transition-all duration-1000 delay-500 transform ${isVisible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"}`}
               >
                 <br />
-                <Button className="bg-[#3BB44A] hover:bg-[#2F8E3A] text-white rounded-full px-8 py-3 hover:scale-105 hover:shadow-lg transition-all duration-300 font-nirmala uppercase font-semibold">
+                <Button
+                  className="bg-[#3BB44A] hover:bg-[#2F8E3A] text-white rounded-full px-8 py-3 hover:scale-105 hover:shadow-lg transition-all duration-300 font-nirmala uppercase font-semibold"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    document.getElementById('about')?.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start'
+                    })
+                  }}
+                >
                   Discover More
                 </Button>
               </div>
@@ -638,7 +729,7 @@ export default function DynagrowthSchools() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {[
               {
                 name: "Pre-School & Nursery School",
@@ -683,7 +774,7 @@ export default function DynagrowthSchools() {
                 color: "#4CAF50",
                 admissionRequirements: [
                   "Birth certificate",
-                  "Primary 6 certificate or equivalent",
+                  "Basic 6 certificate or equivalent",
                   "Previous school transcripts",
                   "Passport photographs (6 copies)"
                 ],
@@ -697,10 +788,10 @@ export default function DynagrowthSchools() {
                 }`}
                 style={{ transitionDelay: `${index * 200}ms` }}
               >
-                <CardContent className="p-8 text-center">
+                <CardContent className="p-6 md:p-8 text-center">
                   {/* Icon */}
                   <div
-                    className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"
+                    className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6"
                     style={{ backgroundColor: `${school.color}15` }}
                   >
                     <div style={{ color: school.color }}>
@@ -708,7 +799,7 @@ export default function DynagrowthSchools() {
                     </div>
                   </div>
 
-                  <h3 className="text-xl text-[#1F3A93] mb-6 font-eras-bold">{school.name}</h3>
+                  <h3 className="text-lg md:text-xl text-[#1F3A93] mb-4 md:mb-6 font-eras-bold">{school.name}</h3>
 
                   {/* Admission Requirements */}
                   <div className="mb-6">
@@ -822,10 +913,10 @@ export default function DynagrowthSchools() {
             </p>
           </div>
 
-          {/* Manual Slider - shows 3-4 images with smooth slide animation */}
-          <div className={`relative max-w-7xl mx-auto transition-all duration-1000 transform ${isSectionVisible("highlights") ? "opacity-100" : "opacity-0"}`}>
+          {/* Manual Slider - shows images with smooth slide animation */}
+          <div className={`relative w-full transition-all duration-1000 transform ${isSectionVisible("highlights") ? "opacity-100" : "opacity-0"}`}>
             <div className="overflow-hidden rounded-2xl">
-              <div className="flex gap-6">
+              <div className="flex gap-0 justify-start">
                 {Array.from({ length: visibleCount }).map((_, idx) => {
                   const imageIdx = (highlightIndex + idx) % highlightImages.length
                   const src = highlightImages[imageIdx]
@@ -834,10 +925,15 @@ export default function DynagrowthSchools() {
                     : 'translate-x-0'
                   const opacityClass = isAnimating ? 'opacity-80' : 'opacity-100'
                   return (
-                    <div 
-                      key={`hl-${imageIdx}-${highlightIndex}`} 
-                      className={`flex-shrink-0 w-64 sm:w-72 md:w-80 lg:w-96 transition-all duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)] ${translateClass} ${opacityClass}`}
-                      style={{ transitionDelay: `${idx * 40}ms`, willChange: 'transform, opacity' }}
+                    <div
+                      key={`hl-${imageIdx}-${highlightIndex}`}
+                      className={`flex-shrink-0 transition-all duration-700 ease-[cubic-bezier(0.22,0.61,0.36,1)] ${translateClass} ${opacityClass}`}
+                      style={{
+                        width: `calc(${100 / visibleCount}% - 8px)`,
+                        marginRight: idx < visibleCount - 1 ? '8px' : '0',
+                        transitionDelay: `${idx * 40}ms`,
+                        willChange: 'transform, opacity'
+                      }}
                     >
                       <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
                         <Image
@@ -909,20 +1005,20 @@ export default function DynagrowthSchools() {
               >
                 <div className="space-y-6">
                   {[
-                    { 
-                      icon: "📍", 
-                      title: "Address", 
-                      content: "1234 Example St., Abuja, Nigeria" 
+                    {
+                      icon: <FontAwesomeIcon icon={faMapMarkerAlt} className="w-5 h-5" />,
+                      title: "Address",
+                      content: "18 Ice Block Road, Jahi, Abuja."
                     },
-                    { 
-                      icon: "📞", 
-                      title: "Phone", 
-                      content: "+234 123 4567 890" 
+                    {
+                      icon: <FontAwesomeIcon icon={faPhone} className="w-5 h-5" />,
+                      title: "Phone",
+                      content: "+234 701 864 7074"
                     },
-                    { 
-                      icon: "✉️", 
-                      title: "Email", 
-                      content: "info@example.com" 
+                    {
+                      icon: <FontAwesomeIcon icon={faEnvelope} className="w-5 h-5" />,
+                      title: "Email",
+                      content: "dng.schools@outlook.com"
                     },
                   ].map((item, index) => (
                     <div
@@ -1015,7 +1111,9 @@ export default function DynagrowthSchools() {
                 <div className="flex items-center gap-4">
                   {/* Facebook */}
                   <a
-                    href="#"
+                    href="https://www.facebook.com/share/1BfRM12ZcF/?mibextid=wwXIfr"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer shadow-lg"
                     style={{ backgroundColor: "#1877F2" }}
                     title="Facebook"
@@ -1028,7 +1126,9 @@ export default function DynagrowthSchools() {
 
                   {/* Instagram */}
                   <a
-                    href="#"
+                    href="https://www.instagram.com/dynagrowth?igsh=cjU5bTJ4eDJuNjF1&utm_source=qr"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer shadow-lg"
                     style={{ backgroundColor: "#E4405F" }}
                     title="Instagram"
@@ -1041,7 +1141,9 @@ export default function DynagrowthSchools() {
 
                   {/* LinkedIn */}
                   <a
-                    href="#"
+                    href="https://www.linkedin.com/company/dynagrowth-schools/"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="w-12 h-12 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer shadow-lg"
                     style={{ backgroundColor: "#0077B5" }}
                     title="LinkedIn"
@@ -1055,15 +1157,31 @@ export default function DynagrowthSchools() {
                 
                 {/* Navigation Links */}
                 <nav className="flex flex-wrap justify-center gap-8">
-                  <a href="#home" className="text-white hover:text-[#A6DCF5] transition-colors duration-300 font-eras text-sm">
+                  <a
+                    href="#home"
+                    className="text-white hover:text-[#A6DCF5] transition-colors duration-300 font-eras text-sm"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      document.getElementById('home')?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                      })
+                    }}
+                  >
                     Home
                   </a>
-                  <a href="#privacy" className="text-white hover:text-[#A6DCF5] transition-colors duration-300 font-eras text-sm">
+                  <button
+                    onClick={() => setIsPrivacyOpen(true)}
+                    className="text-white hover:text-[#A6DCF5] transition-colors duration-300 font-eras text-sm bg-transparent border-none cursor-pointer"
+                  >
                     Privacy Policy
-                  </a>
-                  <a href="#terms" className="text-white hover:text-[#A6DCF5] transition-colors duration-300 font-eras text-sm">
+                  </button>
+                  <button
+                    onClick={() => setIsTermsOpen(true)}
+                    className="text-white hover:text-[#A6DCF5] transition-colors duration-300 font-eras text-sm bg-transparent border-none cursor-pointer"
+                  >
                     Terms Of Service
-                  </a>
+                  </button>
                 </nav>
               </div>
             </div>
@@ -1076,6 +1194,180 @@ export default function DynagrowthSchools() {
             </div>
           </div>
         </footer>
+
+        {/* Terms of Service Modal */}
+        <Dialog open={isTermsOpen} onOpenChange={setIsTermsOpen}>
+          <DialogContent className="rounded-2xl">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-xl font-eras-bold text-[#1F3A93]">
+                Terms Of Service
+              </DialogTitle>
+            </DialogHeader>
+            <div className="text-[#44403D] font-nirmala space-y-4 leading-relaxed text-justify">
+              <p className="text-[#1F3A93] font-semibold">
+                Last updated: 08/10/2025
+              </p>
+
+              <p>
+                Welcome to Dynagrowth Schools' official website. By accessing or using this site, you agree to the following terms of service. Please read them carefully.
+              </p>
+
+              <hr className="border-gray-300" />
+
+              <div>
+                <h3 className="font-bold text-[#1F3A93] mb-2">1. Acceptance of Terms</h3>
+                <p>By using this website, you confirm that you accept these terms. If you do not agree, please do not continue to use the site.</p>
+              </div>
+
+              <hr className="border-gray-300" />
+
+              <div>
+                <h3 className="font-bold text-[#1F3A93] mb-2">2. Website Purpose</h3>
+                <p>This website provides information about Dynagrowth Schools, our programmes, admissions, and contact details. All content is intended for general informational purposes only and may change without prior notice.</p>
+              </div>
+
+              <hr className="border-gray-300" />
+
+              <div>
+                <h3 className="font-bold text-[#1F3A93] mb-2">3. Intellectual Property</h3>
+                <p>All text, logos, graphics, images, and other materials on this website are the property of Dynagrowth Schools. You may not copy, modify, or distribute any content without written permission from the school.</p>
+              </div>
+
+              <hr className="border-gray-300" />
+
+              <div>
+                <h3 className="font-bold text-[#1F3A93] mb-2">4. External Links</h3>
+                <p>Our website may include links to third-party services (e.g., Typeform, Google Maps). Dynagrowth Schools is not responsible for the content or privacy practices of these external sites.</p>
+              </div>
+
+              <hr className="border-gray-300" />
+
+              <div>
+                <h3 className="font-bold text-[#1F3A93] mb-2">5. User Conduct</h3>
+                <p>You agree not to use this site for unlawful purposes or to disrupt its operation. Submitting false or misleading information through forms is strictly prohibited.</p>
+              </div>
+
+              <hr className="border-gray-300" />
+
+              <div>
+                <h3 className="font-bold text-[#1F3A93] mb-2">6. Data Collection and Use</h3>
+                <p>When you use our contact or registration forms, you consent to the collection and use of your data in accordance with our Privacy Policy.</p>
+              </div>
+
+              <hr className="border-gray-300" />
+
+              <div>
+                <h3 className="font-bold text-[#1F3A93] mb-2">7. Limitation of Liability</h3>
+                <p>While we strive to keep the site accurate and secure, Dynagrowth Schools is not liable for any damages arising from the use or inability to use this website or linked platforms.</p>
+              </div>
+
+              <hr className="border-gray-300" />
+
+              <div>
+                <h3 className="font-bold text-[#1F3A93] mb-2">8. Changes to These Terms</h3>
+                <p>We may update or modify these terms at any time. Updates will take effect immediately once posted. Continued use of the site indicates acceptance of the revised terms.</p>
+              </div>
+
+              <hr className="border-gray-300" />
+
+              <div>
+                <h3 className="font-bold text-[#1F3A93] mb-2">📍 Contact Us</h3>
+                <p><strong>Dynagrowth Schools</strong></p>
+                <p>18 Ice-Block Factory Road, Kado Kuchi, Abuja</p>
+                <p>📧 dng.schools@outlook.com | 📞 +2347018647074</p>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        {/* Privacy Policy Modal */}
+        <Dialog open={isPrivacyOpen} onOpenChange={setIsPrivacyOpen}>
+          <DialogContent className="rounded-2xl">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-xl font-eras-bold text-[#1F3A93]">
+                Privacy Policy
+              </DialogTitle>
+            </DialogHeader>
+            <div className="text-[#44403D] font-nirmala space-y-4 leading-relaxed text-justify">
+              <p className="text-[#1F3A93] font-semibold">
+                Last updated: 08/10/2025
+              </p>
+
+              <p>
+                At Dynagrowth Schools, we value your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and safeguard data shared through our website, contact forms, and registration forms.
+              </p>
+
+              <hr className="border-gray-300" />
+
+              <div>
+                <h3 className="font-bold text-[#1F3A93] mb-2">1. Information We Collect</h3>
+                <p>We may collect the following information when you visit our website or submit a form:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Parent/guardian name, phone number, and email address</li>
+                  <li>Child’s name, age, and class level of interest</li>
+                  <li>Messages or enquiries sent through our contact or registration forms</li>
+                  <li>Non-personal information such as browser type, device, and pages visited</li>
+                </ul>
+              </div>
+
+              <hr className="border-gray-300" />
+
+              <div>
+                <h3 className="font-bold text-[#1F3A93] mb-2">2. How We Use Your Information</h3>
+                <p>We use the data you provide to:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Respond to enquiries and process registration requests</li>
+                  <li>Communicate with you about school updates, admissions, or events (only if you opt-in)</li>
+                  <li>Improve our services and website experience</li>
+                </ul>
+                <p className="mt-2">Your data will never be sold, rented, or shared with unauthorised third parties.</p>
+              </div>
+
+              <hr className="border-gray-300" />
+
+              <div>
+                <h3 className="font-bold text-[#1F3A93] mb-2">3. Data Storage and Security</h3>
+                <p>All data collected through our website and Youform system is stored securely. We use encrypted connections (SSL) and follow safe handling procedures to protect your information from loss or unauthorised access.</p>
+              </div>
+
+              <hr className="border-gray-300" />
+
+              <div>
+                <h3 className="font-bold text-[#1F3A93] mb-2">4. Cookies and Tracking</h3>
+                <p>Our website may use cookies for analytics and basic functionality. You can choose to disable cookies through your browser settings without affecting your main browsing experience.</p>
+              </div>
+
+              <hr className="border-gray-300" />
+
+              <div>
+                <h3 className="font-bold text-[#1F3A93] mb-2">5. Your Rights</h3>
+                <p>You have the right to:</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Request a copy of the personal data we hold about you</li>
+                  <li>Ask us to correct or delete your information</li>
+                  <li>Withdraw consent for communication at any time</li>
+                </ul>
+                <p className="mt-2">To make such requests, please contact us at dng.schools@outlook.com or visit our school office.</p>
+              </div>
+
+              <hr className="border-gray-300" />
+
+              <div>
+                <h3 className="font-bold text-[#1F3A93] mb-2">6. Updates to This Policy</h3>
+                <p>We may review this policy periodically to align with updated legal or operational requirements. All updates will be posted on this page with a revised “Last Updated” date.</p>
+              </div>
+
+              <hr className="border-gray-300" />
+
+              <div>
+                <h3 className="font-bold text-[#1F3A93] mb-2">📍 Contact Us</h3>
+                <p><strong>Dynagrowth Schools</strong></p>
+                <p>18 Ice-Block Factory Road, Kado Kuchi, Abuja</p>
+                <p>📧 dng.schools@outlook.com | 📞 +2347018647074</p>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
     </div>
   )
 }

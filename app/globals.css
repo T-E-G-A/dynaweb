@@ -200,3 +200,39 @@
     animation: slideLeft 25s linear infinite;
   }
 }
+
+/* Scrollbar styling - consistent brand blue and hide arrow buttons */
+:root {
+  /* Brand color already used across the site */
+  --brand-blue: #1F3A93;
+  --scrollbar-thumb: var(--brand-blue);
+  --scrollbar-track: transparent; /* keep track minimal/clean */
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin; /* sizes the scrollbar */
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* WebKit (Chrome, Edge, Safari) */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  border-radius: 9999px; /* fully rounded */
+  border: 2px solid transparent; /* adds breathing room on light backgrounds */
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+/* Hide the up/down arrow buttons at both ends (no adverse effect on scrolling) */
+*::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
