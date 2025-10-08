@@ -5,6 +5,9 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Menu, X, ChevronLeft, ChevronRight } from "lucide-react"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStar, faBook, faLaptop, faPalette, faTrophy, faCheck, faEye, faAward } from '@fortawesome/free-solid-svg-icons'
+import { faFacebookF, faInstagram, faLinkedinIn } from '@fortawesome/free-brands-svg-icons'
 
 export default function DynagrowthSchools() {
   const [isVisible, setIsVisible] = useState(false)
@@ -109,8 +112,17 @@ export default function DynagrowthSchools() {
   const isSectionVisible = (id: string) => visibleSections.has(id)
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       <style jsx>{`
+        html, body {
+          overflow-x: hidden;
+          max-width: 100vw;
+        }
+
+        * {
+          box-sizing: border-box;
+        }
+
         @keyframes slideInRight {
           0% {
             transform: translateX(100%) scale(0.9);
@@ -500,61 +512,112 @@ export default function DynagrowthSchools() {
         </div>
       </section>
 
-      {/* Academic Excellence Section - Connected to About Us */}
+      {/* Academic Excellence Section - Enhanced Design */}
       <section
         ref={setSectionRef("academic-excellence")}
         id="academic-excellence"
-        className="py-16 px-4 sm:px-6 lg:px-8 bg-white"
+        className="py-20 px-4 sm:px-6 lg:px-8 bg-white"
       >
         <div className="max-w-7xl mx-auto">
           <div
-            className={`text-center mb-12 transition-all duration-1000 transform ${
+            className={`text-center mb-16 transition-all duration-1000 transform ${
               isSectionVisible("academic-excellence") ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
             }`}
           >
-            <h2 className="text-4xl text-[#1F3A93] mb-4 font-eras-bold">Academic Excellence</h2>
-            <p className="text-[#44403D] max-w-3xl mx-auto font-nirmala">
-              Our comprehensive curriculum ensures excellence across all areas.
+            <div className="inline-flex items-center gap-2 bg-[#1F3A93] text-white px-6 py-2 rounded-full text-sm font-nirmala font-semibold mb-6 shadow-lg">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
+              Excellence in Education
+            </div>
+            <h2 className="text-5xl text-[#1F3A93] mb-6 font-eras-bold">
+              Academic Excellence
+            </h2>
+            <p className="text-[#44403D] max-w-4xl mx-auto font-nirmala text-lg leading-relaxed">
+              Our comprehensive curriculum ensures excellence across all areas, fostering well-rounded individuals prepared for future success through innovative teaching methodologies and personalized attention.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
-                icon: "📚",
+                icon: (
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                  </svg>
+                ),
                 title: "Strong Foundation",
-                desc: "Building solid academic fundamentals",
+                desc: "Building solid academic fundamentals through research-based curricula and individualized learning approaches",
                 color: "#3BB44A",
+                bgColor: "bg-green-50",
+                shadowColor: "shadow-green-200",
+                hoverColor: "hover:shadow-green-300"
               },
               {
-                icon: "💻",
+                icon: (
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  </svg>
+                ),
                 title: "Technology Integration",
-                desc: "Modern tools for modern learning",
+                desc: "Seamlessly incorporating modern tools and digital resources to enhance learning outcomes and prepare students for the digital age",
                 color: "#FBC02D",
+                bgColor: "bg-yellow-50",
+                shadowColor: "shadow-yellow-200",
+                hoverColor: "hover:shadow-yellow-300"
               },
-              { icon: "🎨", title: "Creative Expression", desc: "Nurturing artistic talents", color: "#E53935" },
-              { icon: "🏆", title: "Achievement Focus", desc: "Celebrating every success", color: "#1F3A93" },
+              {
+                icon: (
+                  <FontAwesomeIcon icon={faPalette} className="text-[29px]" />
+                ),
+                title: "Creative Expression",
+                desc: "Nurturing artistic talents and creative thinking through comprehensive arts programs and innovative project-based learning",
+                color: "#E53935",
+                bgColor: "bg-red-50",
+                shadowColor: "shadow-red-200",
+                hoverColor: "hover:shadow-red-300"
+              },
+              {
+                icon: (
+                  <FontAwesomeIcon icon={faTrophy} className="text-[29px]" />
+                ),
+                title: "Achievement Focus",
+                desc: "Celebrating every success and milestone while fostering a growth mindset that inspires continuous improvement and excellence",
+                color: "#1F3A93",
+                bgColor: "bg-blue-50",
+                shadowColor: "shadow-blue-200",
+                hoverColor: "hover:shadow-blue-300"
+              },
             ].map((item, index) => (
               <div
                 key={index}
-                className={`text-center transition-all duration-1000 transform ${
+                className={`group relative transition-all duration-1000 transform ${
                   isSectionVisible("academic-excellence") ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
                 }`}
                 style={{ transitionDelay: `${index * 200}ms` }}
               >
-                <div
-                  className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 hover:scale-110 transition-transform duration-300"
-                  style={{ backgroundColor: `${item.color}10` }}
-                >
-                  <div
-                    className="w-8 h-8 rounded flex items-center justify-center"
-                    style={{ backgroundColor: item.color }}
-                  >
-                    <span className="text-gray-800 text-sm">{item.icon}</span>
+                <div className={`relative h-full ${item.bgColor} rounded-3xl p-8 ${item.shadowColor} ${item.hoverColor} transition-all duration-500 hover:scale-105 hover:-translate-y-2 border border-gray-100`}>
+                  {/* Icon Container */}
+                  <div className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-500 group-hover:scale-110" style={{ backgroundColor: item.color }}>
+                    <div className="text-white">
+                      {item.icon}
+                    </div>
                   </div>
+
+                  {/* Content */}
+                  <div className="text-center">
+                    <h3 className="text-2xl text-[#1F3A93] mb-4 font-eras-bold group-hover:text-[#3BB44A] transition-colors duration-300">
+                      {item.title}
+                    </h3>
+                    <p className="text-[#44403D] font-nirmala leading-relaxed group-hover:text-[#333] transition-colors duration-300">
+                      {item.desc}
+                    </p>
+                  </div>
+
+                  {/* Decorative Elements */}
+                  <div className="absolute top-4 right-4 w-2 h-2 bg-gray-200 rounded-full group-hover:bg-gray-300 transition-colors duration-300"></div>
+                  <div className="absolute bottom-4 left-4 w-1 h-1 bg-gray-200 rounded-full group-hover:bg-gray-300 transition-colors duration-300"></div>
                 </div>
-                <h3 className="text-xl text-[#1F3A93] mb-2 font-eras font-semibold">{item.title}</h3>
-                <p className="text-[#44403D] text-sm font-nirmala">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -570,22 +633,37 @@ export default function DynagrowthSchools() {
             }`}
           >
             <h2 className="text-4xl text-[#1F3A93] mb-4 font-eras-bold">Our Schools</h2>
+            <p className="text-[#44403D] max-w-3xl mx-auto font-nirmala">
+              Comprehensive education from early childhood through college preparation
+            </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
                 name: "Pre-School & Nursery School",
+                icon: (
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                  </svg>
+                ),
+                color: "#E91E63",
                 admissionRequirements: [
                   "Birth certificate",
-                  "Immunization records", 
+                  "Immunization records",
                   "Parent/guardian identification",
                   "Passport photographs (4 copies)"
                 ],
                 admissionNote: "No entrance examination required"
               },
               {
-                name: "Basic", 
+                name: "Basic",
+                icon: (
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                  </svg>
+                ),
+                color: "#2196F3",
                 admissionRequirements: [
                   "Birth certificate",
                   "Previous school report card",
@@ -596,6 +674,13 @@ export default function DynagrowthSchools() {
               },
               {
                 name: "College",
+                icon: (
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z"/>
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                  </svg>
+                ),
+                color: "#4CAF50",
                 admissionRequirements: [
                   "Birth certificate",
                   "Primary 6 certificate or equivalent",
@@ -612,25 +697,39 @@ export default function DynagrowthSchools() {
                 }`}
                 style={{ transitionDelay: `${index * 200}ms` }}
               >
-                <CardContent className="p-6 text-center">
-                    <h3 className="text-xl text-[#1F3A93] mb-2 font-eras-bold">{school.name}</h3>
-                    
-                    {/* Admission Requirements */}
-                    <div className="mb-4">
-                      <h4 className="text-sm font-semibold text-[#1F3A93] mb-2 font-eras">Admission Requirements:</h4>
-                      <ul className="space-y-1 text-center">
-                        {school.admissionRequirements.map((req, reqIndex) => (
-                          <li key={reqIndex} className="text-xs text-[#44403D] font-nirmala">
-                            • {req}
-                          </li>
-                        ))}
-                      </ul>
-                      <p className="text-xs text-[#3BB44A] mt-2 font-nirmala italic">{school.admissionNote}</p>
+                <CardContent className="p-8 text-center">
+                  {/* Icon */}
+                  <div
+                    className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"
+                    style={{ backgroundColor: `${school.color}15` }}
+                  >
+                    <div style={{ color: school.color }}>
+                      {school.icon}
                     </div>
+                  </div>
 
-                    <Button className="bg-[#3BB44A] hover:bg-[#2F8E3A] text-white rounded-full px-6 py-2 hover:scale-105 transition-all duration-300 w-full font-nirmala uppercase font-semibold">
-                      Register Your Interest
-                    </Button>
+                  <h3 className="text-xl text-[#1F3A93] mb-6 font-eras-bold">{school.name}</h3>
+
+                  {/* Admission Requirements */}
+                  <div className="mb-6">
+                    <h4 className="text-sm font-semibold text-[#1F3A93] mb-4 font-eras">Admission Requirements:</h4>
+                    <ul className="space-y-2 text-center mb-4">
+                      {school.admissionRequirements.map((req, reqIndex) => (
+                        <li key={reqIndex} className="text-sm text-[#44403D] font-nirmala list-none">
+                          {req}
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Admission Note Box */}
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                      <p className="text-sm text-[#4CAF50] font-nirmala font-medium">{school.admissionNote}</p>
+                    </div>
+                  </div>
+
+                  <Button className="bg-[#4CAF50] hover:bg-[#45a049] text-white rounded-full px-6 py-2 hover:scale-105 transition-all duration-300 w-full font-nirmala uppercase font-semibold">
+                    Register Your Interest
+                  </Button>
                 </CardContent>
               </Card>
             ))}
