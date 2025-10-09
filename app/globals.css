@@ -41,7 +41,7 @@
   --sidebar-ring: oklch(0.708 0 0);
   /* Updated font variables with reliable fallbacks */
   --font-nirmala: "Nirmala UI", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  --font-itc-eras: 'ITC Eras Demi','ITC Eras','ITC Eras Ultra','ITC Eras Light',"Arial Rounded MT Bold","Helvetica Rounded",Arial,sans-serif;
+  --font-itc-eras: 'ITC Eras','ITC Eras Demi','ITC Eras Ultra','ITC Eras Book','ITC Eras Light',"Arial Rounded MT Bold","Helvetica Rounded",Arial,sans-serif;
 }
 
 .dark {
@@ -131,12 +131,14 @@
     @apply bg-background text-foreground;
   }
 }
-/* Force all headings/titles to use the Eras-style bold font */
+/* Force all headings/titles to use the Eras-style bold font (with high specificity) */
 @layer base {
   h1, h2, h3, h4, h5, h6,
-  [data-slot="dialog-title"] {
-    font-family: var(--font-itc-eras);
-    font-weight: 700;
+  [data-slot="dialog-title"],
+  .font-eras-bold, .font-eras, .font-itc-eras {
+    font-family: var(--font-itc-eras) !important;
+    font-weight: 700 !important;
+    font-style: normal !important;
   }
 }
 

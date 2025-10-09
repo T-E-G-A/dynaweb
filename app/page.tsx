@@ -725,7 +725,7 @@ export default function DynagrowthSchools() {
           >
             <h2 className="text-4xl text-[#1F3A93] mb-4 font-eras-bold">Our Schools</h2>
             <p className="text-[#44403D] max-w-3xl mx-auto font-nirmala">
-              Comprehensive education from early childhood through college preparation
+             Shaping confident, capable learners through every stage of their educational journey.
             </p>
           </div>
 
@@ -788,18 +788,9 @@ export default function DynagrowthSchools() {
                 }`}
                 style={{ transitionDelay: `${index * 200}ms` }}
               >
-                <CardContent className="p-6 md:p-8 text-center">
-                  {/* Icon */}
-                  <div
-                    className="w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6"
-                    style={{ backgroundColor: `${school.color}15` }}
-                  >
-                    <div style={{ color: school.color }}>
-                      {school.icon}
-                    </div>
-                  </div>
+                <CardContent className="p-6 md:p-8 text-center flex flex-col gap-6 min-h-[520px]">
 
-                  <h3 className="text-lg md:text-xl text-[#1F3A93] mb-4 md:mb-6 font-eras-bold">{school.name}</h3>
+                  <h3 className="text-lg md:text-xl text-[#1F3A93] mt-2 md:mt-4 mb-4 md:mb-6 font-eras-bold">{school.name}</h3>
 
                   {/* Admission Requirements */}
                   <div className="mb-6">
@@ -1237,7 +1228,7 @@ export default function DynagrowthSchools() {
 
               <div>
                 <h3 className="font-bold text-[#1F3A93] mb-2">4. External Links</h3>
-                <p>Our website may include links to third-party services (e.g., Typeform, Google Maps). Dynagrowth Schools is not responsible for the content or privacy practices of these external sites.</p>
+                <p>Our website may include links to third-party services (e.g., Youform, Google Maps). Dynagrowth Schools is not responsible for the content or privacy practices of these external sites.</p>
               </div>
 
               <hr className="border-gray-300" />
