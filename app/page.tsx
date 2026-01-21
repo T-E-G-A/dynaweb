@@ -336,8 +336,8 @@ export default function DynagrowthSchools() {
                   Contact
                 </a>
                 <div className="px-4">
-                  <Button className="bg-[#3BB44A] hover:bg-[#2F8E3A] text-white rounded-full px-6 py-2 transition-colors duration-300 w-full font-nirmala uppercase font-semibold" onClick={() => window.open('https://app.youform.com/forms/xhpwp89i', '_blank')}>
-                    Register Your Interest
+                  <Button className="bg-[#3BB44A] hover:bg-[#2F8E3A] text-white rounded-full px-6 py-2 transition-colors duration-300 w-full font-nirmala uppercase font-semibold" onClick={() => window.open('https://app.youform.com/forms/pe7sbw5b', '_blank')}>
+                    Get in touch
                   </Button>
                 </div>
               </div>
@@ -374,7 +374,13 @@ export default function DynagrowthSchools() {
                 <br />
                 <Button
                   className="bg-[#3BB44A] hover:bg-[#2F8E3A] text-white rounded-full px-8 py-3 hover:scale-105 hover:shadow-lg transition-all duration-300 font-nirmala uppercase font-semibold"
-                  onClick={() => window.open('https://app.youform.com/forms/pe7sbw5b', '_blank')}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    document.getElementById('about')?.scrollIntoView({
+                      behavior: 'smooth',
+                      block: 'start'
+                    })
+                  }}
                 >
                   Discover More
                 </Button>
