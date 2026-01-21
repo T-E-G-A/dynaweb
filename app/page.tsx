@@ -247,7 +247,7 @@ export default function DynagrowthSchools() {
               >
                 Contact
               </a>
-              <Button className="bg-[#3BB44A] hover:bg-[#2F8E3A] text-white rounded-full px-6 py-2 transition-colors duration-300 font-nirmala uppercase font-semibold">
+              <Button className="bg-[#3BB44A] hover:bg-[#2F8E3A] text-white rounded-full px-6 py-2 transition-colors duration-300 font-nirmala uppercase font-semibold" onClick={() => window.open('https://app.youform.com/forms/pe7sbw5b', '_blank')}>
                 Get in touch
               </Button>
             </div>
@@ -336,7 +336,7 @@ export default function DynagrowthSchools() {
                   Contact
                 </a>
                 <div className="px-4">
-                  <Button className="bg-[#3BB44A] hover:bg-[#2F8E3A] text-white rounded-full px-6 py-2 transition-colors duration-300 w-full font-nirmala uppercase font-semibold">
+                  <Button className="bg-[#3BB44A] hover:bg-[#2F8E3A] text-white rounded-full px-6 py-2 transition-colors duration-300 w-full font-nirmala uppercase font-semibold" onClick={() => window.open('https://app.youform.com/forms/xhpwp89i', '_blank')}>
                     Register Your Interest
                   </Button>
                 </div>
@@ -374,13 +374,7 @@ export default function DynagrowthSchools() {
                 <br />
                 <Button
                   className="bg-[#3BB44A] hover:bg-[#2F8E3A] text-white rounded-full px-8 py-3 hover:scale-105 hover:shadow-lg transition-all duration-300 font-nirmala uppercase font-semibold"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    document.getElementById('about')?.scrollIntoView({
-                      behavior: 'smooth',
-                      block: 'start'
-                    })
-                  }}
+                  onClick={() => window.open('https://app.youform.com/forms/pe7sbw5b', '_blank')}
                 >
                   Discover More
                 </Button>
@@ -809,7 +803,7 @@ export default function DynagrowthSchools() {
                     </div>
                   </div>
 
-                  <Button className="bg-[#4CAF50] hover:bg-[#45a049] text-white rounded-full px-6 py-2 hover:scale-105 transition-all duration-300 w-full font-nirmala uppercase font-semibold">
+                  <Button className="bg-[#4CAF50] hover:bg-[#45a049] text-white rounded-full px-6 py-2 hover:scale-105 transition-all duration-300 w-full font-nirmala uppercase font-semibold" onClick={() => window.open('https://app.youform.com/forms/xhpwp89i', '_blank')}>
                     Register Your Interest
                   </Button>
                 </CardContent>
@@ -1009,7 +1003,7 @@ export default function DynagrowthSchools() {
                     {
                       icon: <FontAwesomeIcon icon={faEnvelope} className="w-5 h-5" />,
                       title: "Email",
-                      content: "dng.schools@outlook.com"
+                      content: " hello@dynagrowthschools.com"
                     },
                   ].map((item, index) => (
                     <div
@@ -1036,8 +1030,8 @@ export default function DynagrowthSchools() {
                   }`}
                   style={{ transitionDelay: "800ms" }}
                 >
-                  <Button className="w-full bg-[#3BB44A] hover:bg-[#2F8E3A] text-white rounded-xl px-8 py-4 hover:scale-105 transition-all duration-300 font-nirmala uppercase font-semibold shadow-lg">
-                    Get in Touch
+                  <Button className="w-full bg-[#3BB44A] hover:bg-[#2F8E3A] text-white rounded-xl px-8 py-4 hover:scale-105 transition-all duration-300 font-nirmala uppercase font-semibold shadow-lg" onClick={() => window.open('https://app.youform.com/forms/pe7sbw5b', '_blank')}>
+                    View Contact & Feedback Form
                   </Button>
                 </div>
               </div>
@@ -1265,7 +1259,7 @@ export default function DynagrowthSchools() {
                 <h3 className="font-bold text-[#1F3A93] mb-2">📍 Contact Us</h3>
                 <p><strong>Dynagrowth Schools</strong></p>
                 <p>18 Ice-Block Factory Road, Kado Kuchi, Abuja</p>
-                <p>📧 dng.schools@outlook.com</p>
+                <p>📧 hello@dynagrowthschools.com</p>
                 <p>📞 +2347018647074</p>
               </div>
             </div>
@@ -1355,7 +1349,7 @@ export default function DynagrowthSchools() {
                 <h3 className="font-bold text-[#1F3A93] mb-2">📍 Contact Us</h3>
                 <p><strong>Dynagrowth Schools</strong></p>
                 <p>18 Ice-Block Factory Road, Kado Kuchi, Abuja</p>
-                <p>📧 dng.schools@outlook.com</p>
+                <p>📧 hello@dynagrowthschools.com</p>
                 <p>📞 +2347018647074</p>
               </div>
             </div>
