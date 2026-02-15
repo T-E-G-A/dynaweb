@@ -247,6 +247,12 @@ export default function DynagrowthSchools() {
               >
                 Contact
               </a>
+              <a
+                href="/portal"
+                className="text-[#1F3A93] hover:underline hover:decoration-[#3BB44A] transition-all duration-300 font-eras"
+              >
+                Portal
+              </a>
               <Button className="bg-[#3BB44A] hover:bg-[#2F8E3A] text-white rounded-full px-6 py-2 transition-colors duration-300 font-nirmala uppercase font-semibold" onClick={() => window.open('https://app.youform.com/forms/pe7sbw5b', '_blank')}>
                 Get in touch
               </Button>
@@ -268,17 +274,23 @@ export default function DynagrowthSchools() {
                 <a
                   href="#home"
                   className="text-[#1F3A93] hover:text-[#3BB44A] transition-all duration-300 px-4 font-eras"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    setIsMobileMenuOpen(false)
-                    document.getElementById('home')?.scrollIntoView({
-                      behavior: 'smooth',
-                      block: 'start'
-                    })
-                  }}
-                >
-                  Home
-                </a>
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setIsMobileMenuOpen(false)
+                      document.getElementById('home')?.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                      })
+                    }}
+                  >
+                    Home
+                  </a>
+                  <a
+                    href="/portal"
+                    className="text-[#1F3A93] hover:text-[#3BB44A] transition-all duration-300 px-4 font-eras"
+                  >
+                    Portal
+                  </a>
                 <a
                   href="#about"
                   className="text-[#1F3A93] hover:text-[#3BB44A] transition-all duration-300 px-4 font-eras"
@@ -1160,6 +1172,12 @@ export default function DynagrowthSchools() {
                     }}
                   >
                     Home
+                  </a>
+                  <a
+                    href="/portal"
+                    className="text-white hover:text-[#A6DCF5] transition-colors duration-300 font-eras text-sm"
+                  >
+                    Portal
                   </a>
                   <button
                     onClick={() => setIsPrivacyOpen(true)}

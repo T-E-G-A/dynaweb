@@ -1,0 +1,472 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Menu, X, Search, Calendar, GraduationCap, IdCard, Loader2, Printer, ArrowLeft } from "lucide-react"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFacebookF, faInstagram, faLinkedinIn } from '@fortawesome/free-brands-svg-icons'
+import { faPhone, faEnvelope, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
+
+// --- Types ---
+type SchoolType = 'EarlyYear' | 'Basic' | 'College';
+
+interface ResultData {
+  Name: string;
+  AdmissionNo: string;
+  Class: string;
+  Gender: string;
+  DateOfBirth: string;
+  Session: string;
+  Term: string;
+  NoInClass: string;
+  SchoolDays: string;
+  DaysAttended: string;
+  DaysAbsent: string;
+  StudentPicture?: string;
+  StudentAverage: number;
+  ClassAverage: string;
+  HighestAverage: string;
+  SubjectsOffered: number;
+  MarksObtained: number;
+  MarksObtainable: number;
+  FormTeacherName: string;
+  TeacherComment: string;
+  ResumptionDate: string;
+  SchoolType: SchoolType;
+  [key: string]: any;
+}
+
+// --- Configuration ---
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjQ94Y32Vgg02sqcjhjQf0-nOleCUTAaNIHPCk0KpGy2vln6j_O76FGAcEtpwOMnWy7A/exec";
+
+export default function ResultPortal() {
+  const [view, setView] = useState<'search' | 'result'>('search');
+  const [schoolType, setSchoolType] = useState<SchoolType>('EarlyYear');
+  const [admissionNo, setAdmissionNo] = useState('');
+  const [dob, setDob] = useState('');
+  const [session, setSession] = useState('');
+  const [term, setTerm] = useState('First Term');
+  const [sessionsList, setSessionsList] = useState<string[]>([]);
+  const [result, setResult] = useState<ResultData | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Fetch sessions on load
+  useEffect(() => {
+    const fetchSessions = async () => {
+      try {
+        const response = await fetch(`${SCRIPT_URL}?action=getSessions`);
+        const data = await response.json();
+        setSessionsList(data);
+        if (data.length > 0) setSession(data[0]);
+      } catch (error) {
+        console.error("Failed to fetch sessions", error);
+        setSessionsList(["2025/2026"]);
+        setSession("2025/2026");
+      }
+    };
+    fetchSessions();
+  }, []);
+
+  const handleSearch = async () => {
+    if (!admissionNo || !dob || !session || !term) {
+      alert("Please fill all fields");
+      return;
+    }
+    setLoading(true);
+    try {
+      const url = `${SCRIPT_URL}?action=search&admissionNo=${encodeURIComponent(admissionNo)}&dateOfBirth=${encodeURIComponent(dob)}&schoolType=${schoolType}&session=${encodeURIComponent(session)}&term=${encodeURIComponent(term)}`;
+      const response = await fetch(url);
+      const res = await response.json();
+      setLoading(false);
+      if (res.success) {
+        setResult(res.data);
+        setView('result');
+      } else {
+        alert(res.message);
+      }
+    } catch (error) {
+      setLoading(false);
+      alert("Search failed. Please check your connection.");
+    }
+  };
+
+  const getSubjects = (type: SchoolType) => {
+    if (type === 'College') {
+      return [
+        { key: 'EnglishStudies', label: 'English Studies' },
+        { key: 'Mathematics', label: 'Mathematics' },
+        { key: 'Science', label: 'Science' },
+        { key: 'SocialCitizenship', label: 'Social and citizenship' },
+        { key: 'CulturalCreativeArt', label: 'Cultural and Creative Art' },
+        { key: 'DigitalTechnology', label: 'Digital Technology' },
+        { key: 'PhysicalHealthEducation', label: 'Physical Health Education' },
+        { key: 'Religion', label: 'Religion (I.S/C.R.S)' },
+        { key: 'AgriculturalScience', label: 'Agricultural Science' },
+        { key: 'Literature', label: 'Literature' },
+        { key: 'BusinessStudies', label: 'Business Studies' },
+        { key: 'BasicTechnology', label: 'Basic Technology' },
+        { key: 'NigerianHistory', label: 'Nigerian History' }
+      ];
+    } else if (type === 'EarlyYear') {
+      return [
+        { key: 'Literacy', label: 'Literacy' },
+        { key: 'Numeracy', label: 'Numeracy' },
+        { key: 'Science', label: 'Science' },
+        { key: 'Cultural', label: 'Cultural' },
+        { key: 'CulturalCreativeArt', label: 'Cultural and Creative Art' },
+        { key: 'PracticalLifeActivities', label: 'Practical Life Activities' },
+        { key: 'Sensorial', label: 'Sensorial' },
+        { key: 'Religion', label: 'Religion (I.S/C.R.S)' }
+      ];
+    } else {
+      return [
+        { key: 'EnglishStudies', label: 'English Studies' },
+        { key: 'Mathematics', label: 'Mathematics' },
+        { key: 'Science', label: 'Science' },
+        { key: 'SocialCitizenship', label: 'Social and citizenship' },
+        { key: 'CulturalCreativeArt', label: 'Cultural and Creative Art' },
+        { key: 'BasicDigitalLiteracy', label: 'Basic Digital Literacy' },
+        { key: 'PhysicalHealthEducation', label: 'Physical Health Education' },
+        { key: 'Religion', label: 'Religion (I.S/C.R.S)' },
+        { key: 'Prevocational', label: 'Prevocational' },
+        { key: 'QuantitativeReasoning', label: 'Quantitative Reasoning' },
+        { key: 'VerbalReasoning', label: 'Verbal Reasoning' },
+        { key: 'Phonics', label: 'Phonics' },
+        { key: 'NigerianHistory', label: 'Nigerian History' }
+      ];
+    }
+  };
+
+  const affectiveItems = [
+    { key: 'Attendance', label: 'ATTENDANCE' },
+    { key: 'Politeness', label: 'POLITENESS' },
+    { key: 'Participation', label: 'PARTICIPATION' },
+    { key: 'Cooperation', label: 'COOPERATION' },
+    { key: 'Handwriting', label: 'HANDWRITING' },
+    { key: 'Friendliness', label: 'FRIENDLINESS' },
+    { key: 'Honesty', label: 'HONESTY' },
+    { key: 'Sport', label: 'SPORT' },
+    { key: 'Neatness', label: 'NEATNESS' }
+  ];
+
+  return (
+    <div className="min-h-screen bg-white font-sans">
+      <style jsx global>{`
+        @media print {
+          nav, footer, .no-print { display: none !important; }
+          body { background: white !important; }
+          .print-container { width: 100% !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+          .result-card { 
+            box-shadow: none !important; 
+            border: none !important; 
+            width: 100% !important; 
+            height: 285mm !important;
+            padding: 5mm !important;
+          }
+          .termly-report-banner {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            background-color: #5dade2 !important;
+          }
+        }
+      `}</style>
+
+      {/* Navigation */}
+      <nav className="bg-white shadow-sm fixed top-0 left-0 right-0 z-50 h-16 flex items-center">
+        <div className="max-w-7xl mx-auto px-4 w-full flex justify-between items-center">
+          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => window.location.href = '/'}>
+            <Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-d4iXS1NKPMEhu5xs4Y6kxw0QgWREo0.png" alt="Logo" width={40} height={40} className="rounded-full" />
+            <span className="text-xl text-[#1F3A93] font-eras-bold">Dynagrowth</span>
+          </div>
+          <div className="hidden lg:flex items-center space-x-6">
+            <a href="/" className="text-[#1F3A93] font-eras hover:text-[#3BB44A]">Home</a>
+            <Button className="bg-[#3BB44A] hover:bg-[#2F8E3A] text-white rounded-full px-6" onClick={() => window.location.href = '/#contact'}>Get in touch</Button>
+          </div>
+          <button className="lg:hidden text-[#1F3A93]" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 z-40 bg-white pt-20 px-6">
+          <div className="flex flex-col space-y-4">
+            <a href="/" className="text-xl text-[#1F3A93] font-eras">Home</a>
+            <Button className="bg-[#3BB44A] w-full" onClick={() => window.location.href = '/#contact'}>Get in touch</Button>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <main className="pt-24 pb-12 px-4 bg-[#f8faff] min-h-[calc(100vh-80px)]">
+        {view === 'search' ? (
+          <div className="max-w-xl mx-auto">
+            <div className="text-center mb-8">
+              <div className="w-24 h-24 bg-white rounded-full border-4 border-[#1F3A93] flex items-center justify-center mx-auto mb-4 overflow-hidden shadow-lg">
+                <Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-d4iXS1NKPMEhu5xs4Y6kxw0QgWREo0.png" alt="Logo" width={80} height={80} objectFit="contain" />
+              </div>
+              <h1 className="text-3xl font-eras-bold text-[#1F3A93]">Student Result Portal</h1>
+              <p className="text-[#3BB44A] font-nirmala-italic italic">We learn and grow together in love</p>
+            </div>
+
+            <Card className="border-none shadow-xl">
+              <CardContent className="p-8">
+                <div className="flex gap-2 mb-6">
+                  {(['EarlyYear', 'Basic', 'College'] as SchoolType[]).map(type => (
+                    <button
+                      key={type}
+                      onClick={() => setSchoolType(type)}
+                      className={`flex-1 py-3 px-2 rounded-lg text-sm font-semibold transition-all ${schoolType === type ? 'bg-[#1F3A93] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                    >
+                      {type === 'EarlyYear' ? 'Early Year' : type === 'Basic' ? 'Basic' : 'College'}
+                    </button>
+                  ))}
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-bold text-[#1F3A93] mb-1">Admission Number</label>
+                    <div className="relative">
+                      <IdCard className="absolute left-3 top-3 text-gray-400" size={20} />
+                      <input 
+                        type="text" 
+                        className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1F3A93] outline-none"
+                        placeholder="e.g., 2025001"
+                        value={admissionNo}
+                        onChange={e => setAdmissionNo(e.target.value)}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-bold text-[#1F3A93] mb-1">Date of Birth</label>
+                    <div className="relative">
+                      <Calendar className="absolute left-3 top-3 text-gray-400" size={20} />
+                      <input 
+                        type="date" 
+                        className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1F3A93] outline-none"
+                        value={dob}
+                        onChange={e => setDob(e.target.value)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-bold text-[#1F3A93] mb-1">Session</label>
+                      <select 
+                        className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1F3A93] outline-none bg-white"
+                        value={session}
+                        onChange={e => setSession(e.target.value)}
+                      >
+                        {sessionsList.map(s => <option key={s} value={s}>{s}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold text-[#1F3A93] mb-1">Term</label>
+                      <select 
+                        className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1F3A93] outline-none bg-white"
+                        value={term}
+                        onChange={e => setTerm(e.target.value)}
+                      >
+                        <option value="First Term">First Term</option>
+                        <option value="Second Term">Second Term</option>
+                        <option value="Third Term">Third Term</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <Button 
+                    className="w-full py-6 bg-[#1F3A93] hover:bg-[#152a6b] text-white text-lg font-bold rounded-lg mt-4"
+                    onClick={handleSearch}
+                    disabled={loading}
+                  >
+                    {loading ? <Loader2 className="animate-spin mr-2" /> : <Search className="mr-2" />}
+                    Search Result
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        ) : result && (
+          <div className="print-container max-w-4xl mx-auto">
+            <div className="no-print flex justify-between mb-6">
+              <Button variant="outline" onClick={() => setView('search')} className="border-[#1F3A93] text-[#1F3A93]">
+                <ArrowLeft size={18} className="mr-2" /> New Search
+              </Button>
+              <Button onClick={() => window.print()} className="bg-[#1F3A93] text-white">
+                <Printer size={18} className="mr-2" /> Print Report
+              </Button>
+            </div>
+
+            <Card className="result-card border-none shadow-2xl p-0 overflow-hidden bg-white text-black">
+              <div className="p-8">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-4">
+                  <Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-d4iXS1NKPMEhu5xs4Y6kxw0QgWREo0.png" alt="Logo" width={80} height={80} />
+                  <div className="text-center flex-1">
+                    <h2 className="text-3xl font-black text-[#0074D9] uppercase tracking-tighter">DYNAGROWTH SCHOOLS</h2>
+                    <p className="text-sm font-bold italic text-[#fbbc04]">We learn and grow together in love</p>
+                  </div>
+                  <div className="w-24 h-28 border-2 border-black flex items-center justify-center bg-gray-50 text-[10px] font-bold">
+                    {result.StudentPicture ? <img src={result.StudentPicture} className="w-full h-full object-cover" /> : "PASSPORT"}
+                  </div>
+                </div>
+
+                <div className="border-t-2 border-black my-4"></div>
+
+                {/* Student Info */}
+                <div className="flex mb-4">
+                  <div className="w-[70%] grid grid-cols-2 gap-y-2 text-[12px]">
+                    <div className="flex"><span className="font-bold w-24">NAME:</span><span className="border-b border-gray-300 flex-1">{result.Name}</span></div>
+                    <div className="flex"><span className="font-bold w-24">ADMISSION NO:</span><span className="border-b border-gray-300 flex-1">{result.AdmissionNo}</span></div>
+                    <div className="flex"><span className="font-bold w-24">CLASS:</span><span className="border-b border-gray-300 flex-1">{result.Class}</span></div>
+                    <div className="flex"><span className="font-bold w-24">GENDER:</span><span className="border-b border-gray-300 flex-1">{result.Gender}</span></div>
+                    <div className="flex"><span className="font-bold w-24">D.O.B:</span><span className="border-b border-gray-300 flex-1">{result.DateOfBirth}</span></div>
+                    <div className="flex"><span className="font-bold w-24">SESSION:</span><span className="border-b border-gray-300 flex-1">{result.Session}</span></div>
+                    <div className="flex"><span className="font-bold w-24">TERM:</span><span className="border-b border-gray-300 flex-1">{result.Term}</span></div>
+                    <div className="flex"><span className="font-bold w-24">NO. IN CLASS:</span><span className="border-b border-gray-300 flex-1">{result.NoInClass}</span></div>
+                  </div>
+                  <div className="w-[30%] border border-black">
+                    <table className="w-full text-[11px] border-collapse">
+                      <thead><tr><th colSpan={2} className="bg-gray-100 border-b border-black p-1">ATTENDANCE RECORD</th></tr></thead>
+                      <tbody>
+                        <tr><td className="p-1 border-b border-black">SCHOOL DAYS:</td><td className="p-1 border-b border-black text-right font-bold">{result.SchoolDays}</td></tr>
+                        <tr><td className="p-1 border-b border-black">DAYS ATTENDED:</td><td className="p-1 border-b border-black text-right font-bold">{result.DaysAttended}</td></tr>
+                        <tr><td className="p-1">DAYS ABSENT:</td><td className="p-1 text-right font-bold">{result.DaysAbsent}</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Banner */}
+                <div className="termly-report-banner bg-[#5dade2] text-black py-2 text-center font-black rounded-full text-lg mb-4 uppercase">
+                  TERMLY REPORT FOR {result.Term?.toUpperCase()} {result.Session?.toUpperCase()} ACADEMIC SESSION
+                </div>
+
+                {/* Main Table */}
+                <table className="w-full border-collapse border-2 border-black text-[11px] mb-0">
+                  <thead>
+                    <tr className="bg-gray-50">
+                      <th className="border border-black p-2 text-left w-1/3">SUBJECTS</th>
+                      <th className="border border-black p-1 text-center">C.A<br/>(20)</th>
+                      <th className="border border-black p-1 text-center">PRJ<br/>(10)</th>
+                      <th className="border border-black p-1 text-center">ACT<br/>(10)</th>
+                      <th className="border border-black p-1 text-center">EXM<br/>(60)</th>
+                      <th className="border border-black p-1 text-center">TOT<br/>(100)</th>
+                      <th className="border border-black p-1 text-center">GRD</th>
+                      <th className="border border-black p-1 text-center">REMARKS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {getSubjects(result.SchoolType).map(sub => (
+                      <tr key={sub.key}>
+                        <td className="border border-black p-1 pl-2 font-bold">{sub.label}</td>
+                        <td className="border border-black p-1 text-center">{result[sub.key + '_CA'] || '-'}</td>
+                        <td className="border border-black p-1 text-center">{result[sub.key + '_Projects'] || '-'}</td>
+                        <td className="border border-black p-1 text-center">{result[sub.key + '_ClassActivities'] || '-'}</td>
+                        <td className="border border-black p-1 text-center">{result[sub.key + '_Exams'] || '-'}</td>
+                        <td className="border border-black p-1 text-center font-bold">{result[sub.key + '_Total'] || '-'}</td>
+                        <td className="border border-black p-1 text-center font-black">{result[sub.key + '_Grade'] || '-'}</td>
+                        <td className="border border-black p-1 text-center text-[9px] leading-tight">{result[sub.key + '_Remarks'] || '-'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                {/* Analysis */}
+                <div className="border-x-2 border-b-2 border-black p-2 flex justify-between text-[12px]">
+                  <div className="font-bold">ANALYSIS</div>
+                  <div className="flex gap-4">
+                    <div><span className="text-[#17a2b8] font-bold mr-1">Subjects Offered:</span><span className="font-bold">{result.SubjectsOffered}</span></div>
+                    <div><span className="text-[#17a2b8] font-bold mr-1">Marks Obtainable:</span><span className="font-bold">{result.MarksObtainable}</span></div>
+                    <div><span className="text-[#17a2b8] font-bold mr-1">Marks Obtained:</span><span className="font-bold">{result.MarksObtained}</span></div>
+                  </div>
+                </div>
+                <div className="border-x-2 border-b-2 border-black p-2 flex justify-end gap-6 text-[12px]">
+                  <div><span className="text-[#17a2b8] font-bold mr-1">Student's Average:</span><span className="font-bold">{result.StudentAverage}%</span></div>
+                  <div><span className="text-[#17a2b8] font-bold mr-1">Class Average:</span><span className="font-bold">{result.ClassAverage}%</span></div>
+                  <div><span className="text-[#17a2b8] font-bold mr-1">Highest Average in Class:</span><span className="font-bold">{result.HighestAverage}%</span></div>
+                </div>
+
+                {/* Bottom Section */}
+                <div className="grid grid-cols-2 gap-4 mt-4">
+                  <div className="border border-black p-2">
+                    <h4 className="text-[11px] font-bold mb-1">GRADE CATEGORIES</h4>
+                    <table className="w-full text-[10px] border-collapse border border-black">
+                      <thead className="bg-gray-100"><tr><th className="border border-black p-1">SCORE</th><th className="border border-black p-1">GRD</th><th className="border border-black p-1">REMARKS</th></tr></thead>
+                      <tbody>
+                        {[{r:'90-100', g:'A+', rem:'DISTINCTION'}, {r:'80-89', g:'A', rem:'EXCELLENT'}, {r:'70-79', g:'B+', rem:'VERY GOOD'}, {r:'60-69', g:'B', rem:'GOOD'}, {r:'50-59', g:'C', rem:'MERIT'}, {r:'40-49', g:'D', rem:'FAIR'}, {r:'0-39', g:'F', rem:'FAIL'}].map((row, i) => (
+                          <tr key={i}><td className="border border-black p-1 text-center">{row.r}</td><td className="border border-black p-1 text-center font-bold">{row.g}</td><td className="border border-black p-1 text-center">{row.rem}</td></tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="border border-black">
+                    <div className="bg-gray-100 p-1 text-center font-bold text-[11px] border-b border-black">AFFECTIVE DOMAIN</div>
+                    <div className="p-1">
+                      {affectiveItems.map(item => (
+                        <div key={item.key} className="flex justify-between text-[10px] border-b border-gray-100 py-0.5">
+                          <span>{item.label}</span>
+                          <span className="font-bold">{result[item.key + '_Rating'] || '-'}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Footer */}
+                <div className="border border-black p-2 mt-4 grid grid-cols-3 gap-4 text-[11px]">
+                  <div><span className="font-bold block">FORM TEACHER'S NAME:</span><div className="border-b border-black min-h-[18px]">{result.FormTeacherName}</div></div>
+                  <div><span className="font-bold block">COMMENT:</span><div className="border-b border-black min-h-[18px]">{result.TeacherComment}</div></div>
+                  <div>
+                    <span className="font-bold block">REGISTRAR SIGNATURE:</span>
+                    <div className="flex items-center gap-2">
+                      <img src="https://i.ibb.co/vrgztW2/signature.png" className="h-8 object-contain" alt="Signature" />
+                      <div className="flex-1 text-right">Date: <span className="border-b border-black">{new Date().toLocaleDateString('en-GB')}</span></div>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gray-100 border border-black border-t-0 p-2 text-center font-black text-sm">
+                  RESUMPTION DATE: {result.ResumptionDate}
+                </div>
+              </div>
+            </Card>
+          </div>
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-[#1F3A93] text-white py-12 px-4 no-print">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div>
+            <div className="flex items-center space-x-3 mb-6">
+              <Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-d4iXS1NKPMEhu5xs4Y6kxw0QgWREo0.png" alt="Logo" width={40} height={40} className="rounded-full bg-white" />
+              <span className="text-2xl font-eras-bold">Dynagrowth</span>
+            </div>
+            <p className="text-gray-300 font-nirmala">Educating the total child with skills for today, values for life.</p>
+          </div>
+          <div>
+            <h3 className="text-xl font-eras-bold mb-6">Quick Links</h3>
+            <ul className="space-y-3 font-nirmala">
+              <li><a href="/" className="hover:text-[#3BB44A]">Home</a></li>
+              <li><a href="/#about" className="hover:text-[#3BB44A]">About Us</a></li>
+              <li><a href="/portal" className="hover:text-[#3BB44A]">Result Portal</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-xl font-eras-bold mb-6">Contact Us</h3>
+            <div className="space-y-4 font-nirmala">
+              <div className="flex items-center space-x-3"><FontAwesomeIcon icon={faPhone} className="text-[#3BB44A]" /><span>+234 803 300 0000</span></div>
+              <div className="flex items-center space-x-3"><FontAwesomeIcon icon={faEnvelope} className="text-[#3BB44A]" /><span>info@dynagrowthschools.com</span></div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  )
+}
