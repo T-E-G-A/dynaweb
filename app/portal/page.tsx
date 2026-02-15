@@ -39,7 +39,7 @@ interface ResultData {
 }
 
 // --- Configuration ---
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzjQ94Y32Vgg02sqcjhjQf0-nOleCUTAaNIHPCk0KpGy2vln6j_O76FGAcEtpwOMnWy7A/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyvoOmmgUb7Ucf-xyMKraavFqZrLg4c4WcROfe6mzltumoqCp4YIbNroxx2pwMZ6FBuNw/exec";
 
 export default function ResultPortal() {
   const [view, setView] = useState<'search' | 'result'>('search');
