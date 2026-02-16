@@ -206,28 +206,63 @@ export default function ResultPortal() {
         #portal-isolated-root .btn-act { padding: 12px 25px; border-radius: 5px; border: none; cursor: pointer; font-weight: 600; color: white; transition: 0.3s; }
         
         @media print {
-          @page { size: A4 portrait; margin: 5mm; }
-          /* Standard way to hide global site elements without breaking the report */
-          nav, footer, header, .no-print, .result-actions { display: none !important; }
+          /* Brute-force reset for all parent containers */
+          html, body, #__next, main, div { 
+            height: auto !important; 
+            overflow: visible !important; 
+            margin: 0 !important; 
+            padding: 0 !important; 
+          }
+
+          @page { size: A4 portrait; margin: 0; }
           
-          /* Force report container to be visible and correctly positioned */
-          #portal-isolated-root { background: white !important; padding: 0 !important; display: block !important; position: static !important; width: 100% !important; }
-          #portal-isolated-root .search-header, #portal-isolated-root .search-box { display: none !important; }
+          /* Hide non-print elements */
+          nav, footer, header, .no-print, .result-actions, #portal-isolated-root .search-header, #portal-isolated-root .search-box { 
+            display: none !important; 
+          }
+          
+          /* Force the isolated root to be the primary print container */
+          #portal-isolated-root { 
+            background: white !important; 
+            padding: 0 !important; 
+            display: block !important; 
+            position: absolute !important; 
+            left: 0 !important; 
+            top: 0 !important; 
+            width: 100% !important; 
+            color: black !important;
+          }
           
           .result-card { 
-            width: 100% !important; 
-            max-width: 100% !important; 
-            padding: 5mm !important; 
-            margin: 0 !important; 
+            width: 210mm !important; 
+            max-width: 210mm !important; 
+            padding: 10mm !important; 
+            margin: 0 auto !important; 
             box-shadow: none !important; 
             border: none !important; 
-            height: 285mm !important; 
+            height: 297mm !important; 
             display: flex !important;
             flex-direction: column !important;
             justify-content: space-between !important; 
-            visibility: visible !important;
+            background: white !important;
+            page-break-after: always !important;
           }
-          .termly-report-banner { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; background-color: #5dade2 !important; }
+          
+          .termly-report-banner { 
+            -webkit-print-color-adjust: exact !important; 
+            print-color-adjust: exact !important; 
+            background-color: #5dade2 !important; 
+          }
+          
+          /* Ensure text and colors are forced */
+          * { 
+            -webkit-print-color-adjust: exact !important; 
+            print-color-adjust: exact !important; 
+            color: black !important;
+          }
+          
+          .school-name-hd { color: #0074D9 !important; }
+          .school-motto-hd { color: #fbbc04 !important; }
         }
       `}} />
 
