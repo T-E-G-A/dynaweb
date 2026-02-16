@@ -83,6 +83,17 @@ export default function ResultPortal() {
     }
   };
 
+  const handlePrint = () => {
+    // Add a class to body to signal printing state for global CSS
+    document.body.classList.add('is-printing-report');
+    window.print();
+    // We don't necessarily need to remove it immediately as print is blocking
+    // but for safety in some browsers:
+    setTimeout(() => {
+      document.body.classList.remove('is-printing-report');
+    }, 1000);
+  };
+
   const getSubjects = (type: SchoolType) => {
     if (type === 'College') {
       return [
@@ -206,33 +217,37 @@ export default function ResultPortal() {
         #portal-isolated-root .btn-act { padding: 12px 25px; border-radius: 5px; border: none; cursor: pointer; font-weight: 600; color: white; transition: 0.3s; }
         
         @media print {
-          /* Brute-force reset for all parent containers */
-          html, body, #__next, main, div { 
+          /* Force the body to allow overflow and set correct background */
+          body.is-printing-report {
+            background: white !important;
+            overflow: visible !important;
+            height: auto !important;
+          }
+
+          /* Reset all parent containers */
+          html, body, #__next, main, div:not(#printable-report-area):not(#printable-report-area *) { 
             height: auto !important; 
-            overflow: visible !important; 
-            margin: 0 !important; 
-            padding: 0 !important; 
+            overflow: visible !important;
+            background: white !important;
           }
 
           @page { size: A4 portrait; margin: 0; }
           
-          /* Hide non-print elements */
-          nav, footer, header, .no-print, .result-actions, #portal-isolated-root .search-header, #portal-isolated-root .search-box { 
-            display: none !important; 
-          }
+          /* Hide everything by default */
+          body * { visibility: hidden !important; }
           
-          /* Force the isolated root to be the primary print container */
-          #portal-isolated-root { 
-            background: white !important; 
-            padding: 0 !important; 
-            display: block !important; 
-            position: absolute !important; 
-            left: 0 !important; 
-            top: 0 !important; 
-            width: 100% !important; 
-            color: black !important;
-          }
+          /* Only show the report area */
+          #printable-report-area, #printable-report-area * { visibility: visible !important; }
           
+          /* Position the report area at the top */
+          #printable-report-area {
+            position: absolute !important;
+            left: 0 !important;
+            top: 0 !important;
+            width: 100% !important;
+            background: white !important;
+          }
+
           .result-card { 
             width: 210mm !important; 
             max-width: 210mm !important; 
@@ -254,7 +269,6 @@ export default function ResultPortal() {
             background-color: #5dade2 !important; 
           }
           
-          /* Ensure text and colors are forced */
           * { 
             -webkit-print-color-adjust: exact !important; 
             print-color-adjust: exact !important; 
@@ -318,7 +332,7 @@ export default function ResultPortal() {
           </div>
         </div>
       ) : result && (
-        <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
+        <div id="printable-report-area" style={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
           <div className="result-card">
             <div className="template-header">
               <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-d4iXS1NKPMEhu5xs4Y6kxw0QgWREo0.png" className="school-logo-img" style={{ width: '80px' }} />
@@ -434,7 +448,7 @@ export default function ResultPortal() {
 
           <div className="result-actions no-print">
             <button className="btn-act" style={{ backgroundColor: '#6c757d' }} onClick={() => setView('search')}>NEW SEARCH</button>
-            <button className="btn-act" style={{ backgroundColor: '#0074D9' }} onClick={() => window.print()}>PRINT REPORT</button>
+            <button className="btn-act" style={{ backgroundColor: '#0074D9' }} onClick={handlePrint}>PRINT REPORT</button>
           </div>
         </div>
       )}
