@@ -157,75 +157,7 @@ export default function ResultPortal() {
 
   return (
     <div className="min-h-screen bg-white font-sans overflow-x-hidden">
-                        <style dangerouslySetInnerHTML={{ __html: `
-        @media print {
-          /* Hide everything except the print container */
-          body * { visibility: hidden !important; }
-          .print-container, .print-container * { visibility: visible !important; }
-          .print-container { 
-            position: absolute !important; 
-            left: 0 !important; 
-            top: 0 !important; 
-            width: 210mm !important; 
-            height: 297mm !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            background: white !important;
-          }
-          
-          /* Force exact colors and backgrounds */
-          * { 
-            -webkit-print-color-adjust: exact !important; 
-            print-color-adjust: exact !important; 
-          }
-          
-          @page {
-            size: A4 portrait;
-            margin: 0;
-          }
-
-          /* Reset potential global CSS conflicts */
-          nav, footer, .no-print, button, [role="dialog"], .dialog-overlay { 
-            display: none !important; 
-          }
-          
-          body { 
-            background: white !important; 
-            margin: 0 !important; 
-            padding: 0 !important; 
-          }
-
-          /* Ensure the card takes full page and uses its own layout */
-          .result-card-print {
-            width: 210mm !important;
-            height: 297mm !important;
-            padding: 10mm 15mm !important;
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: space-between !important;
-            background: white !important;
-            border: none !important;
-            box-shadow: none !important;
-            position: relative !important;
-            overflow: hidden !important;
-          }
-
-          .termly-report-banner-print {
-            background-color: #5dade2 !important;
-            color: #000 !important;
-          }
-
-          table { page-break-inside: avoid !important; }
-          
-          /* Reset global font overrides */
-          .report-text {
-            font-family: Arial, sans-serif !important;
-          }
-          .report-title {
-            font-family: 'ITC Eras', 'Arial Rounded MT Bold', sans-serif !important;
-          }
-        }
-      `}} />
+                        
 
       {/* Navigation Bar */}
       <nav className="bg-white shadow-sm fixed top-0 left-0 right-0 w-full z-50 transition-opacity duration-1000">
