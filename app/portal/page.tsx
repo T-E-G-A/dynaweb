@@ -1,10 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Menu, X, Search, Calendar, GraduationCap, IdCard, Loader2, Printer, ArrowLeft } from "lucide-react"
 
 // --- Types ---
 type SchoolType = 'EarlyYear' | 'Basic' | 'College';
@@ -35,7 +31,6 @@ interface ResultData {
   [key: string]: any;
 }
 
-// --- Configuration ---
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyvoOmmgUb7Ucf-xyMKraavFqZrLg4c4WcROfe6mzltumoqCp4YIbNroxx2pwMZ6FBuNw/exec";
 
 export default function ResultPortal() {
@@ -48,9 +43,7 @@ export default function ResultPortal() {
   const [sessionsList, setSessionsList] = useState<string[]>([]);
   const [result, setResult] = useState<ResultData | null>(null);
   const [loading, setLoading] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Fetch sessions on load
   useEffect(() => {
     const fetchSessions = async () => {
       try {
@@ -59,7 +52,6 @@ export default function ResultPortal() {
         setSessionsList(data);
         if (data.length > 0) setSession(data[0]);
       } catch (error) {
-        console.error("Failed to fetch sessions", error);
         setSessionsList(["2025/2026"]);
         setSession("2025/2026");
       }
@@ -151,292 +143,247 @@ export default function ResultPortal() {
   ];
 
   return (
-    <div className="min-h-screen bg-white font-sans overflow-x-hidden">
-      {/* Navigation Bar */}
-      <nav className="bg-white shadow-sm fixed top-0 left-0 right-0 w-full z-50 transition-opacity duration-1000">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-3 cursor-pointer" onClick={() => window.location.href = '/'}>
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-d4iXS1NKPMEhu5xs4Y6kxw0QgWREo0.png"
-                alt="Dynagrowth Schools Logo"
-                width={40}
-                height={40}
-                className="rounded-full"
-              />
-              <span className="text-xl text-[#1F3A93] font-eras-bold">Dynagrowth</span>
-            </div>
+    <div id="portal-isolated-root" style={{
+      minHeight: '100vh',
+      backgroundColor: '#001f3f',
+      backgroundImage: 'linear-gradient(135deg, #001f3f 0%, #003366 100%)',
+      padding: '20px',
+      fontFamily: 'Arial, Helvetica, sans-serif',
+      color: 'white'
+    }}>
+      <style dangerouslySetInnerHTML={{ __html: `
+        #portal-isolated-root * { box-sizing: border-box; margin: 0; padding: 0; }
+        #portal-isolated-root .search-header { text-align: center; margin-bottom: 30px; }
+        #portal-isolated-root .main-logo-circle { width: 120px; height: 120px; background: white; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; border: 4px solid #0074D9; box-shadow: 0 4px 15px rgba(0,0,0,0.3); overflow: hidden; }
+        #portal-isolated-root .main-logo-circle img { width: 90%; height: 90%; object-fit: contain; }
+        #portal-isolated-root .school-title-main { font-size: 36px; font-weight: 800; margin-bottom: 10px; letter-spacing: 1px; }
+        #portal-isolated-root .school-motto-main { font-size: 18px; color: #fbbc04; font-style: italic; font-weight: 600; }
+        
+        #portal-isolated-root .search-box { background: white; padding: 40px; border-radius: 8px; max-width: 600px; margin: 0 auto; box-shadow: 0 4px 20px rgba(0,0,0,0.2); color: #001f3f; }
+        #portal-isolated-root .school-type-selector { display: flex; gap: 10px; margin-bottom: 20px; }
+        #portal-isolated-root .school-type-btn { flex: 1; padding: 12px; border: 2px solid #001f3f; background: white; cursor: pointer; font-weight: 600; border-radius: 4px; transition: 0.3s; }
+        #portal-isolated-root .school-type-btn.active { background: #001f3f; color: white; }
+        #portal-isolated-root .form-group { margin-bottom: 15px; text-align: left; }
+        #portal-isolated-root .form-label { display: block; font-weight: 700; margin-bottom: 5px; color: #001f3f; font-size: 14px; }
+        #portal-isolated-root .search-input, #portal-isolated-root .search-select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; color: #000; }
+        #portal-isolated-root .search-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        #portal-isolated-root .btn-search { width: 100%; padding: 15px; background: #001f3f; color: white; border: none; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 18px; transition: 0.3s; }
+        #portal-isolated-root .btn-search:hover { background: #001529; }
 
-            <div className="hidden lg:flex items-center space-x-8">
-              <a href="/" className="text-[#1F3A93] hover:underline hover:decoration-[#3BB44A] transition-all duration-300 font-eras">Home</a>
-              <a href="/portal" className="text-[#1F3A93] hover:underline hover:decoration-[#3BB44A] transition-all duration-300 font-eras">Portal</a>
-              <Button className="bg-[#3BB44A] hover:bg-[#2F8E3A] text-white rounded-full px-6 py-2 transition-colors duration-300 font-nirmala uppercase font-semibold" onClick={() => window.open('https://app.youform.com/forms/pe7sbw5b', '_blank')}>
-                Get in touch
-              </Button>
-            </div>
+        #portal-isolated-root .result-card { background: white; padding: 30px; margin: 20px auto; width: 100%; max-width: 850px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); color: #000; display: flex; flex-direction: column; }
+        #portal-isolated-root .template-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        #portal-isolated-root .school-name-hd { font-size: 28px; font-weight: 800; color: #0074D9; text-transform: uppercase; }
+        #portal-isolated-root .school-motto-hd { font-size: 14px; color: #fbbc04; font-style: italic; font-weight: 600; }
+        #portal-isolated-root .student-photo-box { width: 100px; height: 110px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; background: #fff; }
+        #portal-isolated-root .header-separator { border-top: 2px solid #000; margin: 8px 0; }
+        #portal-isolated-root .student-data-grid { display: flex; margin-bottom: 10px; }
+        #portal-isolated-root .data-col-left { width: 70%; display: flex; flex-wrap: wrap; }
+        #portal-isolated-root .data-col-right { width: 30%; border: 1px solid #000; }
+        #portal-isolated-root .info-item { width: 50%; display: flex; font-size: 12px; margin-bottom: 5px; }
+        #portal-isolated-root .info-label-hd { font-weight: 700; min-width: 90px; }
+        #portal-isolated-root .info-value-hd { border-bottom: 1px solid #ddd; flex: 1; padding-left: 5px; }
+        #portal-isolated-root .attendance-table-hd { width: 100%; border-collapse: collapse; }
+        #portal-isolated-root .attendance-table-hd th { background: #f5f5f5; border: 1px solid #000; font-size: 11px; padding: 3px; text-align: left; }
+        #portal-isolated-root .attendance-table-hd td { border: 1px solid #000; font-size: 11px; padding: 3px; text-align: right; font-weight: 700; }
+        #portal-isolated-root .termly-report-banner { background: #5dade2; color: #000; padding: 10px; text-align: center; font-size: 16px; font-weight: 800; border-radius: 25px; margin: 10px 0; text-transform: uppercase; }
+        #portal-isolated-root .hd-table { width: 100%; border-collapse: collapse; border: 2px solid #000; }
+        #portal-isolated-root .hd-table th { border: 1px solid #000; padding: 6px 2px; font-size: 10px; font-weight: 700; text-align: center; background: #fff; }
+        #portal-isolated-root .hd-table td { border: 1px solid #000; padding: 4px; font-size: 11px; text-align: center; }
+        #portal-isolated-root .analysis-section-hd { border: 1px solid #000; border-top: none; padding: 6px 10px; display: flex; justify-content: space-between; font-size: 12px; }
+        #portal-isolated-root .bottom-grid-hd { display: grid; grid-template-columns: 1.2fr 1fr; gap: 15px; margin-top: 10px; }
+        #portal-isolated-root .legend-table-hd { width: 100%; border-collapse: collapse; border: 1px solid #000; }
+        #portal-isolated-root .legend-table-hd th, #portal-isolated-root .legend-table-hd td { border: 1px solid #000; padding: 3px; font-size: 10px; text-align: center; }
+        #portal-isolated-root .affective-box-hd { border: 1px solid #000; }
+        #portal-isolated-root .affective-header-hd { background: #f5f5f5; padding: 4px; text-align: center; font-weight: 700; font-size: 11px; border-bottom: 1px solid #000; }
+        #portal-isolated-root .affective-row-hd { display: flex; justify-content: space-between; padding: 3px 8px; border-bottom: 1px solid #ddd; font-size: 10px; }
+        #portal-isolated-root .teacher-box-hd { margin-top: 10px; border: 1px solid #000; padding: 8px; display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 10px; }
+        #portal-isolated-root .resumption-hd { text-align: center; font-weight: 800; border: 1px solid #000; padding: 6px; margin-top: 8px; background: #f5f5f5; font-size: 13px; }
+        #portal-isolated-root .result-actions { display: flex; gap: 15px; justify-content: center; margin-top: 20px; }
+        #portal-isolated-root .btn-act { padding: 12px 25px; border-radius: 5px; border: none; cursor: pointer; font-weight: 600; color: white; transition: 0.3s; }
+        
+        @media print {
+          @page { size: A4 portrait; margin: 5mm; }
+          body * { visibility: hidden; }
+          #portal-isolated-root, #portal-isolated-root * { visibility: visible; }
+          #portal-isolated-root { background: white !important; padding: 0 !important; position: absolute; left: 0; top: 0; width: 100%; }
+          .result-card { width: 100% !important; max-width: 100% !important; padding: 5mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; height: 285mm !important; justify-content: space-between !important; }
+          .result-actions, .search-header, .search-box { display: none !important; }
+          .termly-report-banner { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; background-color: #5dade2 !important; }
+        }
+      `}} />
 
-            <div className="lg:hidden">
-              <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-[#1F3A93] hover:text-[#3BB44A] transition-colors duration-300">
-                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
+      {view === 'search' ? (
+        <div className="container">
+          <div className="search-header">
+            <div className="main-logo-circle">
+              <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-d4iXS1NKPMEhu5xs4Y6kxw0QgWREo0.png" alt="Logo" />
             </div>
+            <h1 className="school-title-main">DYNAGROWTH SCHOOLS</h1>
+            <p className="school-motto-main">We learn and grow together in love</p>
           </div>
 
-          {isMobileMenuOpen && (
-            <div className="lg:hidden bg-white border-t border-gray-200 py-4">
-              <div className="flex flex-col space-y-4">
-                <a href="/" className="text-[#1F3A93] hover:text-[#3BB44A] transition-all duration-300 px-4 font-eras">Home</a>
-                <a href="/portal" className="text-[#1F3A93] hover:text-[#3BB44A] transition-all duration-300 px-4 font-eras">Portal</a>
-                <Button className="bg-[#3BB44A] mx-4" onClick={() => window.open('https://app.youform.com/forms/pe7sbw5b', '_blank')}>Get in touch</Button>
+          <div className="search-box">
+            <div className="school-type-selector">
+              {(['EarlyYear', 'Basic', 'College'] as SchoolType[]).map(type => (
+                <button key={type} className={`school-type-btn ${schoolType === type ? 'active' : ''}`} onClick={() => setSchoolType(type)}>
+                  {type === 'EarlyYear' ? 'Early Year' : type === 'Basic' ? 'Basic' : 'College'}
+                </button>
+              ))}
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Admission Number</label>
+              <input type="text" className="search-input" placeholder="Enter Admission Number" value={admissionNo} onChange={e => setAdmissionNo(e.target.value)} />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Date of Birth</label>
+              <input type="date" className="search-input" value={dob} onChange={e => setDob(e.target.value)} />
+            </div>
+
+            <div className="search-grid">
+              <div className="form-group">
+                <label className="form-label">Session</label>
+                <select className="search-select" value={session} onChange={e => setSession(e.target.value)}>
+                  {sessionsList.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Term</label>
+                <select className="search-select" value={term} onChange={e => setTerm(e.target.value)}>
+                  <option value="First Term">First Term</option>
+                  <option value="Second Term">Second Term</option>
+                  <option value="Third Term">Third Term</option>
+                </select>
               </div>
             </div>
-          )}
+
+            <button className="btn-search" onClick={handleSearch} disabled={loading}>
+              {loading ? "Searching..." : "SEARCH RESULT"}
+            </button>
+          </div>
         </div>
-      </nav>
-
-      {/* Main Content */}
-      <main className="pt-24 pb-12 px-4 bg-[#f8faff] min-h-[calc(100vh-80px)]">
-        {view === 'search' ? (
-          <div className="max-w-xl mx-auto">
-            <div className="text-center mb-8">
-              <div className="w-24 h-24 bg-white rounded-full border-4 border-[#1F3A93] flex items-center justify-center mx-auto mb-4 overflow-hidden shadow-lg">
-                <Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-d4iXS1NKPMEhu5xs4Y6kxw0QgWREo0.png" alt="Logo" width={80} height={80} objectFit="contain" />
+      ) : result && (
+        <div className="container">
+          <div className="result-card">
+            <div className="template-header">
+              <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-d4iXS1NKPMEhu5xs4Y6kxw0QgWREo0.png" className="school-logo-img" style={{ width: '80px' }} />
+              <div className="school-info-center">
+                <h2 className="school-name-hd">DYNAGROWTH SCHOOLS</h2>
+                <p className="school-motto-hd">We learn and grow together in love</p>
               </div>
-              <h1 className="text-3xl font-eras-bold text-[#1F3A93]">Student Result Portal</h1>
-              <p className="text-gray-600 font-nirmala mt-2">Access termly academic reports securely</p>
+              <div className="student-photo-box">
+                {result.StudentPicture ? <img src={result.StudentPicture} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : "PASSPORT"}
+              </div>
             </div>
 
-            <Card className="border-none shadow-xl">
-              <CardContent className="p-8">
-                <div className="flex gap-2 mb-6">
-                  {(['EarlyYear', 'Basic', 'College'] as SchoolType[]).map(type => (
-                    <button
-                      key={type}
-                      onClick={() => setSchoolType(type)}
-                      className={`flex-1 py-3 px-2 rounded-lg text-sm font-semibold transition-all ${schoolType === type ? 'bg-[#1F3A93] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
-                    >
-                      {type === 'EarlyYear' ? 'Early Year' : type === 'Basic' ? 'Basic' : 'College'}
-                    </button>
+            <div className="header-separator"></div>
+
+            <div className="student-data-grid">
+              <div className="data-col-left">
+                <div className="info-item"><span className="info-label-hd">NAME:</span><span className="info-value-hd">{result.Name}</span></div>
+                <div className="info-item"><span className="info-label-hd">ADMISSION NO:</span><span className="info-value-hd">{result.AdmissionNo}</span></div>
+                <div className="info-item"><span className="info-label-hd">CLASS:</span><span className="info-value-hd">{result.Class}</span></div>
+                <div className="info-item"><span className="info-label-hd">GENDER:</span><span className="info-value-hd">{result.Gender}</span></div>
+                <div className="info-item"><span className="info-label-hd">D.O.B:</span><span className="info-value-hd">{result.DateOfBirth}</span></div>
+                <div className="info-item"><span className="info-label-hd">SESSION:</span><span className="info-value-hd">{result.Session}</span></div>
+                <div className="info-item"><span className="info-label-hd">TERM:</span><span className="info-value-hd">{result.Term}</span></div>
+                <div className="info-item"><span className="info-label-hd">NO. IN CLASS:</span><span className="info-value-hd">{result.NoInClass}</span></div>
+              </div>
+              <div className="data-col-right">
+                <table className="attendance-table-hd">
+                  <thead><tr><th colSpan={2}>ATTENDANCE RECORD</th></tr></thead>
+                  <tbody>
+                    <tr><td>SCHOOL DAYS:</td><td>{result.SchoolDays}</td></tr>
+                    <tr><td>DAYS ATTENDED:</td><td>{result.DaysAttended}</td></tr>
+                    <tr><td>DAYS ABSENT:</td><td>{result.DaysAbsent}</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="termly-report-banner">
+              TERMLY REPORT FOR {result.Term?.toUpperCase()} {result.Session?.toUpperCase()} ACADEMIC SESSION
+            </div>
+
+            <table className="hd-table">
+              <thead>
+                <tr>
+                  <th style={{ width: '30%' }}>SUBJECTS</th>
+                  <th>C.A (20)</th><th>PRJ (10)</th><th>ACT (10)</th><th>EXM (60)</th><th>TOT (100)</th><th>GRD</th><th>REMARKS</th>
+                </tr>
+              </thead>
+              <tbody>
+                {getSubjects(result.SchoolType).map(sub => (
+                  <tr key={sub.key}>
+                    <td style={{ textAlign: 'left', paddingLeft: '8px', fontWeight: 600 }}>{sub.label}</td>
+                    <td>{result[sub.key + '_CA'] || '-'}</td>
+                    <td>{result[sub.key + '_Projects'] || '-'}</td>
+                    <td>{result[sub.key + '_ClassActivities'] || '-'}</td>
+                    <td>{result[sub.key + '_Exams'] || '-'}</td>
+                    <td style={{ fontWeight: 700 }}>{result[sub.key + '_Total'] || '-'}</td>
+                    <td style={{ fontWeight: 800 }}>{result[sub.key + '_Grade'] || '-'}</td>
+                    <td style={{ fontSize: '9px' }}>{result[sub.key + '_Remarks'] || '-'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <div className="analysis-section-hd">
+              <div style={{ fontWeight: 700 }}>ANALYSIS</div>
+              <div style={{ display: 'flex', gap: '15px' }}>
+                <div><span style={{ color: '#17a2b8', fontWeight: 700 }}>Subjects:</span> <b>{result.SubjectsOffered}</b></div>
+                <div><span style={{ color: '#17a2b8', fontWeight: 700 }}>Obtainable:</span> <b>{result.MarksObtainable}</b></div>
+                <div><span style={{ color: '#17a2b8', fontWeight: 700 }}>Obtained:</span> <b>{result.MarksObtained}</b></div>
+              </div>
+            </div>
+            <div className="analysis-section-hd" style={{ justifyContent: 'flex-end', gap: '20px' }}>
+              <div><span style={{ color: '#17a2b8', fontWeight: 700 }}>Average:</span> <b>{result.StudentAverage}%</b></div>
+              <div><span style={{ color: '#17a2b8', fontWeight: 700 }}>Class Avg:</span> <b>{result.ClassAverage}%</b></div>
+              <div><span style={{ color: '#17a2b8', fontWeight: 700 }}>Highest:</span> <b>{result.HighestAverage}%</b></div>
+            </div>
+
+            <div className="bottom-grid-hd">
+              <table className="legend-table-hd">
+                <thead><tr><th>RANGE</th><th>GRADE</th><th>REMARKS</th></tr></thead>
+                <tbody>
+                  {[{r:'90-100', g:'A+', rem:'DISTINCTION'}, {r:'80-89', g:'A', rem:'EXCELLENT'}, {r:'70-79', g:'B+', rem:'VERY GOOD'}, {r:'60-69', g:'B', rem:'GOOD'}, {r:'50-59', g:'C', rem:'MERIT'}, {r:'40-49', g:'D', rem:'FAIR'}, {r:'0-39', g:'F', rem:'FAIL'}].map((row, i) => (
+                    <tr key={i}><td>{row.r}</td><td style={{ fontWeight: 700 }}>{row.g}</td><td>{row.rem}</td></tr>
                   ))}
-                </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-bold text-[#1F3A93] mb-1">Admission Number</label>
-                    <div className="relative">
-                      <IdCard className="absolute left-3 top-3 text-gray-400" size={20} />
-                      <input 
-                        type="text" 
-                        className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1F3A93] outline-none"
-                        placeholder="e.g., 2025001"
-                        value={admissionNo}
-                        onChange={e => setAdmissionNo(e.target.value)}
-                      />
-                    </div>
+                </tbody>
+              </table>
+              <div className="affective-box-hd">
+                <div className="affective-header-hd">AFFECTIVE DOMAIN</div>
+                {affectiveItems.map(item => (
+                  <div key={item.key} className="affective-row-hd">
+                    <span>{item.label}</span>
+                    <span style={{ fontWeight: 700 }}>{result[item.key + '_Rating'] || '-'}</span>
                   </div>
-
-                  <div>
-                    <label className="block text-sm font-bold text-[#1F3A93] mb-1">Date of Birth</label>
-                    <div className="relative">
-                      <Calendar className="absolute left-3 top-3 text-gray-400" size={20} />
-                      <input 
-                        type="date" 
-                        className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1F3A93] outline-none"
-                        value={dob}
-                        onChange={e => setDob(e.target.value)}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-bold text-[#1F3A93] mb-1">Session</label>
-                      <select 
-                        className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1F3A93] outline-none bg-white"
-                        value={session}
-                        onChange={e => setSession(e.target.value)}
-                      >
-                        {sessionsList.map(s => <option key={s} value={s}>{s}</option>)}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-bold text-[#1F3A93] mb-1">Term</label>
-                      <select 
-                        className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1F3A93] outline-none bg-white"
-                        value={term}
-                        onChange={e => setTerm(e.target.value)}
-                      >
-                        <option value="First Term">First Term</option>
-                        <option value="Second Term">Second Term</option>
-                        <option value="Third Term">Third Term</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <Button 
-                    className="w-full py-6 bg-[#1F3A93] hover:bg-[#152a6b] text-white text-lg font-bold rounded-lg mt-4 shadow-lg transition-transform active:scale-95"
-                    onClick={handleSearch}
-                    disabled={loading}
-                  >
-                    {loading ? <Loader2 className="animate-spin mr-2" /> : <Search className="mr-2" />}
-                    Search Result
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        ) : result && (
-          <div className="print-container max-w-4xl mx-auto">
-            <div className="no-print flex justify-between mb-6">
-              <Button variant="outline" onClick={() => setView('search')} className="border-[#1F3A93] text-[#1F3A93] hover:bg-[#1F3A93] hover:text-white transition-all">
-                <ArrowLeft size={18} className="mr-2" /> New Search
-              </Button>
-              <Button onClick={() => window.print()} className="bg-[#1F3A93] text-white hover:bg-[#152a6b] shadow-lg">
-                <Printer size={18} className="mr-2" /> Print & Download Report
-              </Button>
+                ))}
+              </div>
             </div>
 
-            <Card className="result-card-print border-none shadow-2xl p-0 overflow-hidden bg-white text-black report-text" style={{ color: 'black' }}>
-              <div className="h-full flex flex-col w-full">
-                {/* Header */}
-                <div className="flex items-center justify-between mb-2">
-                  <div className="w-[80px]">
-                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-d4iXS1NKPMEhu5xs4Y6kxw0QgWREo0.png" alt="Logo" width={80} height={80} style={{ display: 'block' }} />
-                  </div>
-                  <div className="text-center flex-1">
-                    <h2 className="text-3xl font-black text-[#0074D9] uppercase tracking-tighter report-title" style={{ fontFamily: "'ITC Eras', sans-serif", fontWeight: 900 }}>DYNAGROWTH SCHOOLS</h2>
-                    <p className="text-[14px] font-bold italic text-[#fbbc04]">We learn and grow together in love</p>
-                  </div>
-                  <div className="w-24 h-28 border-2 border-black flex items-center justify-center bg-gray-50 text-[10px] font-bold overflow-hidden">
-                    {result.StudentPicture ? <img src={result.StudentPicture} className="w-full h-full object-cover" /> : "PASSPORT"}
-                  </div>
-                </div>
-
-                <div className="border-t-2 border-black mb-2"></div>
-
-                {/* Student Info */}
-                <div className="flex mb-2">
-                  <div className="w-[70%] grid grid-cols-2 gap-x-4 gap-y-0.5 text-[11px]">
-                    <div className="flex"><span className="font-bold w-24">NAME:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.Name}</span></div>
-                    <div className="flex"><span className="font-bold w-24">ADMISSION NO:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.AdmissionNo}</span></div>
-                    <div className="flex"><span className="font-bold w-24">CLASS:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.Class}</span></div>
-                    <div className="flex"><span className="font-bold w-24">GENDER:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.Gender}</span></div>
-                    <div className="flex"><span className="font-bold w-24">D.O.B:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.DateOfBirth}</span></div>
-                    <div className="flex"><span className="font-bold w-24">SESSION:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.Session}</span></div>
-                    <div className="flex"><span className="font-bold w-24">TERM:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.Term}</span></div>
-                    <div className="flex"><span className="font-bold w-24">NO. IN CLASS:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.NoInClass}</span></div>
-                  </div>
-                  <div className="w-[30%] border border-black ml-4">
-                    <table className="w-full text-[10px] border-collapse" style={{ borderCollapse: 'collapse' }}>
-                      <thead><tr><th colSpan={2} className="bg-gray-100 border-b border-black p-0.5" style={{ backgroundColor: '#f3f4f6' }}>ATTENDANCE RECORD</th></tr></thead>
-                      <tbody>
-                        <tr><td className="p-0.5 border-b border-black pl-1">SCHOOL DAYS:</td><td className="p-0.5 border-b border-black text-right pr-1 font-bold">{result.SchoolDays}</td></tr>
-                        <tr><td className="p-0.5 border-b border-black pl-1">DAYS ATTENDED:</td><td className="p-0.5 border-b border-black text-right pr-1 font-bold">{result.DaysAttended}</td></tr>
-                        <tr><td className="p-0.5 pl-1">DAYS ABSENT:</td><td className="p-0.5 text-right pr-1 font-bold">{result.DaysAbsent}</td></tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                {/* Banner */}
-                <div className="termly-report-banner-print bg-[#5dade2] text-black py-1.5 text-center font-black rounded-full text-[16px] mb-2 uppercase shadow-sm" style={{ backgroundColor: '#5dade2', borderRadius: '9999px' }}>
-                  TERMLY REPORT FOR {result.Term?.toUpperCase()} {result.Session?.toUpperCase()} ACADEMIC SESSION
-                </div>
-
-                {/* Main Table */}
-                <div className="flex-grow overflow-hidden">
-                  <table className="w-full border-collapse border-2 border-black text-[10.5px]" style={{ borderCollapse: 'collapse', border: '2px solid black' }}>
-                    <thead>
-                      <tr className="bg-gray-50" style={{ backgroundColor: '#f9fafb' }}>
-                        <th className="border border-black p-1 text-left w-1/3">SUBJECTS</th>
-                        <th className="border border-black p-0.5 text-center">C.A<br/>(20)</th>
-                        <th className="border border-black p-0.5 text-center">PRJ<br/>(10)</th>
-                        <th className="border border-black p-0.5 text-center">ACT<br/>(10)</th>
-                        <th className="border border-black p-0.5 text-center">EXM<br/>(60)</th>
-                        <th className="border border-black p-0.5 text-center">TOT<br/>(100)</th>
-                        <th className="border border-black p-0.5 text-center">GRD</th>
-                        <th className="border border-black p-0.5 text-center">REMARKS</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {getSubjects(result.SchoolType).map(sub => (
-                        <tr key={sub.key}>
-                          <td className="border border-black p-0.5 pl-2 font-bold">{sub.label}</td>
-                          <td className="border border-black p-0.5 text-center">{result[sub.key + '_CA'] || '-'}</td>
-                          <td className="border border-black p-0.5 text-center">{result[sub.key + '_Projects'] || '-'}</td>
-                          <td className="border border-black p-0.5 text-center">{result[sub.key + '_ClassActivities'] || '-'}</td>
-                          <td className="border border-black p-0.5 text-center">{result[sub.key + '_Exams'] || '-'}</td>
-                          <td className="border border-black p-0.5 text-center font-bold">{result[sub.key + '_Total'] || '-'}</td>
-                          <td className="border border-black p-0.5 text-center font-black">{result[sub.key + '_Grade'] || '-'}</td>
-                          <td className="border border-black p-0.5 text-center text-[8.5px] leading-tight">{result[sub.key + '_Remarks'] || '-'}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* Analysis */}
-                <div className="border-x-2 border-b-2 border-black p-1 flex justify-between text-[11px]" style={{ borderLeft: '2px solid black', borderRight: '2px solid black', borderBottom: '2px solid black' }}>
-                  <div className="font-bold">ANALYSIS</div>
-                  <div className="flex gap-4">
-                    <div><span className="text-[#17a2b8] font-bold mr-1" style={{ color: '#17a2b8' }}>Subjects Offered:</span><span className="font-bold">{result.SubjectsOffered}</span></div>
-                    <div><span className="text-[#17a2b8] font-bold mr-1" style={{ color: '#17a2b8' }}>Marks Obtainable:</span><span className="font-bold">{result.MarksObtainable}</span></div>
-                    <div><span className="text-[#17a2b8] font-bold mr-1" style={{ color: '#17a2b8' }}>Marks Obtained:</span><span className="font-bold">{result.MarksObtained}</span></div>
-                  </div>
-                </div>
-                <div className="border-x-2 border-b-2 border-black p-1 flex justify-end gap-6 text-[11px]" style={{ borderLeft: '2px solid black', borderRight: '2px solid black', borderBottom: '2px solid black' }}>
-                  <div><span className="text-[#17a2b8] font-bold mr-1" style={{ color: '#17a2b8' }}>Student's Average:</span><span className="font-bold">{result.StudentAverage}%</span></div>
-                  <div><span className="text-[#17a2b8] font-bold mr-1" style={{ color: '#17a2b8' }}>Class Average:</span><span className="font-bold">{result.ClassAverage}%</span></div>
-                  <div><span className="text-[#17a2b8] font-bold mr-1" style={{ color: '#17a2b8' }}>Highest Average in Class:</span><span className="font-bold">{result.HighestAverage}%</span></div>
-                </div>
-
-                {/* Bottom Section */}
-                <div className="grid grid-cols-2 gap-4 mt-2">
-                  <div className="border border-black">
-                    <div className="bg-gray-100 p-0.5 text-center font-bold text-[10px] border-b border-black" style={{ backgroundColor: '#f3f4f6' }}>GRADE CATEGORIES</div>
-                    <table className="w-full text-[9px] border-collapse" style={{ borderCollapse: 'collapse' }}>
-                      <tbody>
-                        {[{r:'90-100', g:'A+', rem:'DISTINCTION'}, {r:'80-89', g:'A', rem:'EXCELLENT'}, {r:'70-79', g:'B+', rem:'VERY GOOD'}, {r:'60-69', g:'B', rem:'GOOD'}, {r:'50-59', g:'C', rem:'MERIT'}, {r:'40-49', g:'D', rem:'FAIR'}, {r:'0-39', g:'F', rem:'FAIL'}].map((row, i) => (
-                          <tr key={i}><td className="border-b border-r border-black p-0.5 text-center">{row.r}</td><td className="border-b border-r border-black p-0.5 text-center font-bold">{row.g}</td><td className="border-b border-black p-0.5 text-center">{row.rem}</td></tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="border border-black">
-                    <div className="bg-gray-100 p-0.5 text-center font-bold text-[10px] border-b border-black" style={{ backgroundColor: '#f3f4f6' }}>AFFECTIVE DOMAIN</div>
-                    <div className="p-1">
-                      <div className="grid grid-cols-2 gap-x-4">
-                        {affectiveItems.map(item => (
-                          <div key={item.key} className="flex justify-between text-[10px] border-b border-gray-100 py-0.5">
-                            <span>{item.label}</span>
-                            <span className="font-bold">{result[item.key + '_Rating'] || '-'}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Footer Info */}
-                <div className="border border-black p-1.5 mt-2 grid grid-cols-3 gap-4 text-[10.5px]">
-                  <div><span className="font-bold block">FORM TEACHER'S NAME:</span><div className="border-b border-black min-h-[16px] font-semibold">{result.FormTeacherName}</div></div>
-                  <div><span className="font-bold block">COMMENT:</span><div className="border-b border-black min-h-[16px] font-semibold">{result.TeacherComment}</div></div>
-                  <div>
-                    <span className="font-bold block">REGISTRAR SIGNATURE:</span>
-                    <div className="flex items-center gap-2">
-                      <img src="https://i.ibb.co/vrgztW2/signature.png" className="h-7 object-contain" alt="Signature" style={{ display: 'block' }} />
-                      <div className="flex-1 text-right">Date: <span className="border-b border-black font-semibold">{new Date().toLocaleDateString('en-GB')}</span></div>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-gray-100 border border-black border-t-0 p-1.5 text-center font-black text-[13px]" style={{ backgroundColor: '#f3f4f6' }}>
-                  RESUMPTION DATE: {result.ResumptionDate}
+            <div className="teacher-box-hd">
+              <div><span style={{ fontWeight: 700, fontSize: '11px' }}>TEACHER:</span><div style={{ borderBottom: '1px solid #000', minHeight: '18px' }}>{result.FormTeacherName}</div></div>
+              <div><span style={{ fontWeight: 700, fontSize: '11px' }}>COMMENT:</span><div style={{ borderBottom: '1px solid #000', minHeight: '18px' }}>{result.TeacherComment}</div></div>
+              <div>
+                <span style={{ fontWeight: 700, fontSize: '11px' }}>REGISTRAR:</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <img src="https://i.ibb.co/vrgztW2/signature.png" style={{ height: '25px' }} />
+                  <span style={{ fontSize: '10px' }}>{new Date().toLocaleDateString('en-GB')}</span>
                 </div>
               </div>
-            </Card>
+            </div>
+
+            <div className="resumption-hd">RESUMPTION DATE: {result.ResumptionDate}</div>
           </div>
-        )}
-      </main>
+
+          <div className="result-actions no-print">
+            <button className="btn-act" style={{ backgroundColor: '#6c757d' }} onClick={() => setView('search')}>NEW SEARCH</button>
+            <button className="btn-act" style={{ backgroundColor: '#0074D9' }} onClick={() => window.print()}>PRINT REPORT</button>
+          </div>
+        </div>
+      )}
     </div>
-  )
+  );
 }
