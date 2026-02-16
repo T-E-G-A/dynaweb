@@ -157,46 +157,76 @@ export default function ResultPortal() {
 
   return (
     <div className="min-h-screen bg-white font-sans overflow-x-hidden">
-            <style jsx global>{`
+                  <style jsx global>{`
+        /* Global Reset for Printing */
         @media print {
-          nav, footer, .no-print, .dialog-overlay { display: none !important; }
-          body { background: white !important; margin: 0 !important; padding: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+          /* Hide everything except the print container */
+          body * { visibility: hidden !important; }
+          .print-container, .print-container * { visibility: visible !important; }
+          .print-container { 
+            position: absolute !important; 
+            left: 0 !important; 
+            top: 0 !important; 
+            width: 210mm !important; 
+            height: 297mm !important;
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+          
+          /* Force exact colors and backgrounds */
+          * { 
+            -webkit-print-color-adjust: exact !important; 
+            print-color-adjust: exact !important; 
+            color-adjust: exact !important;
+          }
           
           @page {
             size: A4 portrait;
             margin: 0;
           }
 
-          .print-container { 
-            width: 210mm !important; 
-            max-width: 210mm !important; 
-            height: 297mm !important;
+          /* Reset potential global CSS conflicts */
+          nav, footer, .no-print, button, [role="dialog"], .dialog-overlay { 
+            display: none !important; 
+            visibility: hidden !important;
+          }
+          
+          body { 
+            background: white !important; 
+            margin: 0 !important; 
             padding: 0 !important; 
-            margin: 0 auto !important; 
-            background: white !important;
           }
 
-          .result-card { 
-            box-shadow: none !important; 
-            border: none !important; 
-            width: 210mm !important; 
+          /* Ensure the card takes full page and uses its own layout */
+          .result-card-print {
+            width: 210mm !important;
             height: 297mm !important;
-            padding: 8mm 12mm !important;
+            padding: 10mm 15mm !important;
             display: flex !important;
             flex-direction: column !important;
             justify-content: space-between !important;
-            margin: 0 !important;
+            background: white !important;
+            border: none !important;
+            box-shadow: none !important;
+            position: relative !important;
+            overflow: hidden !important;
           }
 
-          .termly-report-banner {
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
+          .termly-report-banner-print {
             background-color: #5dade2 !important;
             color: #000 !important;
+            -webkit-print-color-adjust: exact !important;
           }
 
-          table { page-break-inside: avoid; }
-          * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+          table { page-break-inside: avoid !important; }
+          
+          /* Reset global font overrides from globals.css for the report */
+          .report-text {
+            font-family: Arial, sans-serif !important;
+          }
+          .report-title {
+            font-family: 'ITC Eras', 'Arial Rounded MT Bold', sans-serif !important;
+          }
         }
       `}</style>
 
@@ -334,9 +364,156 @@ export default function ResultPortal() {
             </Card>
           </div>
         ) : result && (
-          <div className="print-container max-w-4xl mx-auto">
+                    <div className="print-container max-w-4xl mx-auto">
             <div className="no-print flex justify-between mb-6">
               <Button variant="outline" onClick={() => setView('search')} className="border-[#1F3A93] text-[#1F3A93] hover:bg-[#1F3A93] hover:text-white transition-all">
+                <ArrowLeft size={18} className="mr-2" /> New Search
+              </Button>
+              <Button onClick={() => window.print()} className="bg-[#1F3A93] text-white hover:bg-[#152a6b] shadow-lg">
+                <Printer size={18} className="mr-2" /> Print & Download Report
+              </Button>
+            </div>
+
+            <Card className="result-card-print border-none shadow-2xl p-0 overflow-hidden bg-white text-black report-text" style={{ color: 'black' }}>
+              <div className="h-full flex flex-col w-full">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-2">
+                  <div className="w-[80px]">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-d4iXS1NKPMEhu5xs4Y6kxw0QgWREo0.png" alt="Logo" width={80} height={80} style={{ display: 'block' }} />
+                  </div>
+                  <div className="text-center flex-1">
+                    <h2 className="text-3xl font-black text-[#0074D9] uppercase tracking-tighter report-title" style={{ fontFamily: "'ITC Eras', sans-serif", fontWeight: 900 }}>DYNAGROWTH SCHOOLS</h2>
+                    <p className="text-[14px] font-bold italic text-[#fbbc04]">We learn and grow together in love</p>
+                  </div>
+                  <div className="w-24 h-28 border-2 border-black flex items-center justify-center bg-gray-50 text-[10px] font-bold overflow-hidden">
+                    {result.StudentPicture ? <img src={result.StudentPicture} className="w-full h-full object-cover" /> : "PASSPORT"}
+                  </div>
+                </div>
+
+                <div className="border-t-2 border-black mb-2"></div>
+
+                {/* Student Info */}
+                <div className="flex mb-2">
+                  <div className="w-[70%] grid grid-cols-2 gap-x-4 gap-y-0.5 text-[11px]">
+                    <div className="flex"><span className="font-bold w-24">NAME:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.Name}</span></div>
+                    <div className="flex"><span className="font-bold w-24">ADMISSION NO:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.AdmissionNo}</span></div>
+                    <div className="flex"><span className="font-bold w-24">CLASS:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.Class}</span></div>
+                    <div className="flex"><span className="font-bold w-24">GENDER:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.Gender}</span></div>
+                    <div className="flex"><span className="font-bold w-24">D.O.B:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.DateOfBirth}</span></div>
+                    <div className="flex"><span className="font-bold w-24">SESSION:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.Session}</span></div>
+                    <div className="flex"><span className="font-bold w-24">TERM:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.Term}</span></div>
+                    <div className="flex"><span className="font-bold w-24">NO. IN CLASS:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.NoInClass}</span></div>
+                  </div>
+                  <div className="w-[30%] border border-black ml-4">
+                    <table className="w-full text-[10px] border-collapse" style={{ borderCollapse: 'collapse' }}>
+                      <thead><tr><th colSpan={2} className="bg-gray-100 border-b border-black p-0.5" style={{ backgroundColor: '#f3f4f6' }}>ATTENDANCE RECORD</th></tr></thead>
+                      <tbody>
+                        <tr><td className="p-0.5 border-b border-black pl-1">SCHOOL DAYS:</td><td className="p-0.5 border-b border-black text-right pr-1 font-bold">{result.SchoolDays}</td></tr>
+                        <tr><td className="p-0.5 border-b border-black pl-1">DAYS ATTENDED:</td><td className="p-0.5 border-b border-black text-right pr-1 font-bold">{result.DaysAttended}</td></tr>
+                        <tr><td className="p-0.5 pl-1">DAYS ABSENT:</td><td className="p-0.5 text-right pr-1 font-bold">{result.DaysAbsent}</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* Banner */}
+                <div className="termly-report-banner-print bg-[#5dade2] text-black py-1.5 text-center font-black rounded-full text-[16px] mb-2 uppercase shadow-sm" style={{ backgroundColor: '#5dade2', borderRadius: '9999px' }}>
+                  TERMLY REPORT FOR {result.Term?.toUpperCase()} {result.Session?.toUpperCase()} ACADEMIC SESSION
+                </div>
+
+                {/* Main Table */}
+                <div className="flex-grow overflow-hidden">
+                  <table className="w-full border-collapse border-2 border-black text-[10.5px]" style={{ borderCollapse: 'collapse', border: '2px solid black' }}>
+                    <thead>
+                      <tr className="bg-gray-50" style={{ backgroundColor: '#f9fafb' }}>
+                        <th className="border border-black p-1 text-left w-1/3">SUBJECTS</th>
+                        <th className="border border-black p-0.5 text-center">C.A<br/>(20)</th>
+                        <th className="border border-black p-0.5 text-center">PRJ<br/>(10)</th>
+                        <th className="border border-black p-0.5 text-center">ACT<br/>(10)</th>
+                        <th className="border border-black p-0.5 text-center">EXM<br/>(60)</th>
+                        <th className="border border-black p-0.5 text-center">TOT<br/>(100)</th>
+                        <th className="border border-black p-0.5 text-center">GRD</th>
+                        <th className="border border-black p-0.5 text-center">REMARKS</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {getSubjects(result.SchoolType).map(sub => (
+                        <tr key={sub.key}>
+                          <td className="border border-black p-0.5 pl-2 font-bold">{sub.label}</td>
+                          <td className="border border-black p-0.5 text-center">{result[sub.key + '_CA'] || '-'}</td>
+                          <td className="border border-black p-0.5 text-center">{result[sub.key + '_Projects'] || '-'}</td>
+                          <td className="border border-black p-0.5 text-center">{result[sub.key + '_ClassActivities'] || '-'}</td>
+                          <td className="border border-black p-0.5 text-center">{result[sub.key + '_Exams'] || '-'}</td>
+                          <td className="border border-black p-0.5 text-center font-bold">{result[sub.key + '_Total'] || '-'}</td>
+                          <td className="border border-black p-0.5 text-center font-black">{result[sub.key + '_Grade'] || '-'}</td>
+                          <td className="border border-black p-0.5 text-center text-[8.5px] leading-tight">{result[sub.key + '_Remarks'] || '-'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Analysis */}
+                <div className="border-x-2 border-b-2 border-black p-1 flex justify-between text-[11px]" style={{ borderLeft: '2px solid black', borderRight: '2px solid black', borderBottom: '2px solid black' }}>
+                  <div className="font-bold">ANALYSIS</div>
+                  <div className="flex gap-4">
+                    <div><span className="text-[#17a2b8] font-bold mr-1" style={{ color: '#17a2b8' }}>Subjects Offered:</span><span className="font-bold">{result.SubjectsOffered}</span></div>
+                    <div><span className="text-[#17a2b8] font-bold mr-1" style={{ color: '#17a2b8' }}>Marks Obtainable:</span><span className="font-bold">{result.MarksObtainable}</span></div>
+                    <div><span className="text-[#17a2b8] font-bold mr-1" style={{ color: '#17a2b8' }}>Marks Obtained:</span><span className="font-bold">{result.MarksObtained}</span></div>
+                  </div>
+                </div>
+                <div className="border-x-2 border-b-2 border-black p-1 flex justify-end gap-6 text-[11px]" style={{ borderLeft: '2px solid black', borderRight: '2px solid black', borderBottom: '2px solid black' }}>
+                  <div><span className="text-[#17a2b8] font-bold mr-1" style={{ color: '#17a2b8' }}>Student's Average:</span><span className="font-bold">{result.StudentAverage}%</span></div>
+                  <div><span className="text-[#17a2b8] font-bold mr-1" style={{ color: '#17a2b8' }}>Class Average:</span><span className="font-bold">{result.ClassAverage}%</span></div>
+                  <div><span className="text-[#17a2b8] font-bold mr-1" style={{ color: '#17a2b8' }}>Highest Average in Class:</span><span className="font-bold">{result.HighestAverage}%</span></div>
+                </div>
+
+                {/* Bottom Section */}
+                <div className="grid grid-cols-2 gap-4 mt-2">
+                  <div className="border border-black">
+                    <div className="bg-gray-100 p-0.5 text-center font-bold text-[10px] border-b border-black" style={{ backgroundColor: '#f3f4f6' }}>GRADE CATEGORIES</div>
+                    <table className="w-full text-[9px] border-collapse" style={{ borderCollapse: 'collapse' }}>
+                      <tbody>
+                        {[{r:'90-100', g:'A+', rem:'DISTINCTION'}, {r:'80-89', g:'A', rem:'EXCELLENT'}, {r:'70-79', g:'B+', rem:'VERY GOOD'}, {r:'60-69', g:'B', rem:'GOOD'}, {r:'50-59', g:'C', rem:'MERIT'}, {r:'40-49', g:'D', rem:'FAIR'}, {r:'0-39', g:'F', rem:'FAIL'}].map((row, i) => (
+                          <tr key={i}><td className="border-b border-r border-black p-0.5 text-center">{row.r}</td><td className="border-b border-r border-black p-0.5 text-center font-bold">{row.g}</td><td className="border-b border-black p-0.5 text-center">{row.rem}</td></tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="border border-black">
+                    <div className="bg-gray-100 p-0.5 text-center font-bold text-[10px] border-b border-black" style={{ backgroundColor: '#f3f4f6' }}>AFFECTIVE DOMAIN</div>
+                    <div className="p-1">
+                      <div className="grid grid-cols-2 gap-x-4">
+                        {affectiveItems.map(item => (
+                          <div key={item.key} className="flex justify-between text-[10px] border-b border-gray-100 py-0.5">
+                            <span>{item.label}</span>
+                            <span className="font-bold">{result[item.key + '_Rating'] || '-'}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Footer Info */}
+                <div className="border border-black p-1.5 mt-2 grid grid-cols-3 gap-4 text-[10.5px]">
+                  <div><span className="font-bold block">FORM TEACHER'S NAME:</span><div className="border-b border-black min-h-[16px] font-semibold">{result.FormTeacherName}</div></div>
+                  <div><span className="font-bold block">COMMENT:</span><div className="border-b border-black min-h-[16px] font-semibold">{result.TeacherComment}</div></div>
+                  <div>
+                    <span className="font-bold block">REGISTRAR SIGNATURE:</span>
+                    <div className="flex items-center gap-2">
+                      <img src="https://i.ibb.co/vrgztW2/signature.png" className="h-7 object-contain" alt="Signature" style={{ display: 'block' }} />
+                      <div className="flex-1 text-right">Date: <span className="border-b border-black font-semibold">{new Date().toLocaleDateString('en-GB')}</span></div>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-gray-100 border border-black border-t-0 p-1.5 text-center font-black text-[13px]" style={{ backgroundColor: '#f3f4f6' }}>
+                  RESUMPTION DATE: {result.ResumptionDate}
+                </div>
+              </div>
+            </Card>
+          </div>
+        )} className="border-[#1F3A93] text-[#1F3A93] hover:bg-[#1F3A93] hover:text-white transition-all">
                 <ArrowLeft size={18} className="mr-2" /> New Search
               </Button>
               <Button onClick={() => window.print()} className="bg-[#1F3A93] text-white hover:bg-[#152a6b] shadow-lg">
