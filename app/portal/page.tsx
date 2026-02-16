@@ -149,17 +149,21 @@ export default function ResultPortal() {
       backgroundImage: 'linear-gradient(135deg, #001f3f 0%, #003366 100%)',
       padding: '20px',
       fontFamily: 'Arial, Helvetica, sans-serif',
-      color: 'white'
+      color: 'white',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'flex-start'
     }}>
       <style dangerouslySetInnerHTML={{ __html: `
         #portal-isolated-root * { box-sizing: border-box; margin: 0; padding: 0; }
-        #portal-isolated-root .search-header { text-align: center; margin-bottom: 30px; }
+        #portal-isolated-root .search-header { text-align: center; margin-bottom: 30px; width: 100%; }
         #portal-isolated-root .main-logo-circle { width: 120px; height: 120px; background: white; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; border: 4px solid #0074D9; box-shadow: 0 4px 15px rgba(0,0,0,0.3); overflow: hidden; }
         #portal-isolated-root .main-logo-circle img { width: 90%; height: 90%; object-fit: contain; }
         #portal-isolated-root .school-title-main { font-size: 36px; font-weight: 800; margin-bottom: 10px; letter-spacing: 1px; }
         #portal-isolated-root .school-motto-main { font-size: 18px; color: #fbbc04; font-style: italic; font-weight: 600; }
         
-        #portal-isolated-root .search-box { background: white; padding: 40px; border-radius: 8px; max-width: 600px; margin: 0 auto; box-shadow: 0 4px 20px rgba(0,0,0,0.2); color: #001f3f; }
+        #portal-isolated-root .search-box { background: white; padding: 40px; border-radius: 8px; width: 100%; max-width: 600px; margin: 0 auto; box-shadow: 0 4px 20px rgba(0,0,0,0.2); color: #001f3f; }
         #portal-isolated-root .school-type-selector { display: flex; gap: 10px; margin-bottom: 20px; }
         #portal-isolated-root .school-type-btn { flex: 1; padding: 12px; border: 2px solid #001f3f; background: white; cursor: pointer; font-weight: 600; border-radius: 4px; transition: 0.3s; }
         #portal-isolated-root .school-type-btn.active { background: #001f3f; color: white; }
@@ -198,22 +202,37 @@ export default function ResultPortal() {
         #portal-isolated-root .affective-row-hd { display: flex; justify-content: space-between; padding: 3px 8px; border-bottom: 1px solid #ddd; font-size: 10px; }
         #portal-isolated-root .teacher-box-hd { margin-top: 10px; border: 1px solid #000; padding: 8px; display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 10px; }
         #portal-isolated-root .resumption-hd { text-align: center; font-weight: 800; border: 1px solid #000; padding: 6px; margin-top: 8px; background: #f5f5f5; font-size: 13px; }
-        #portal-isolated-root .result-actions { display: flex; gap: 15px; justify-content: center; margin-top: 20px; }
+        #portal-isolated-root .result-actions { display: flex; gap: 15px; justify-content: center; margin-top: 20px; width: 100%; }
         #portal-isolated-root .btn-act { padding: 12px 25px; border-radius: 5px; border: none; cursor: pointer; font-weight: 600; color: white; transition: 0.3s; }
         
         @media print {
           @page { size: A4 portrait; margin: 5mm; }
-          body * { visibility: hidden; }
-          #portal-isolated-root, #portal-isolated-root * { visibility: visible; }
-          #portal-isolated-root { background: white !important; padding: 0 !important; position: absolute; left: 0; top: 0; width: 100%; }
-          .result-card { width: 100% !important; max-width: 100% !important; padding: 5mm !important; margin: 0 !important; box-shadow: none !important; border: none !important; height: 285mm !important; justify-content: space-between !important; }
-          .result-actions, .search-header, .search-box { display: none !important; }
+          /* Standard way to hide global site elements without breaking the report */
+          nav, footer, header, .no-print, .result-actions { display: none !important; }
+          
+          /* Force report container to be visible and correctly positioned */
+          #portal-isolated-root { background: white !important; padding: 0 !important; display: block !important; position: static !important; width: 100% !important; }
+          #portal-isolated-root .search-header, #portal-isolated-root .search-box { display: none !important; }
+          
+          .result-card { 
+            width: 100% !important; 
+            max-width: 100% !important; 
+            padding: 5mm !important; 
+            margin: 0 !important; 
+            box-shadow: none !important; 
+            border: none !important; 
+            height: 285mm !important; 
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-between !important; 
+            visibility: visible !important;
+          }
           .termly-report-banner { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; background-color: #5dade2 !important; }
         }
       `}} />
 
       {view === 'search' ? (
-        <div className="container">
+        <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
           <div className="search-header">
             <div className="main-logo-circle">
               <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-d4iXS1NKPMEhu5xs4Y6kxw0QgWREo0.png" alt="Logo" />
@@ -264,7 +283,7 @@ export default function ResultPortal() {
           </div>
         </div>
       ) : result && (
-        <div className="container">
+        <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
           <div className="result-card">
             <div className="template-header">
               <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-d4iXS1NKPMEhu5xs4Y6kxw0QgWREo0.png" className="school-logo-img" style={{ width: '80px' }} />
