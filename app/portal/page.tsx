@@ -176,8 +176,10 @@ export default function ResultPortal() {
 
         #portal-root .result-card { background: white; padding: 30px; margin: 20px auto; width: 100%; max-width: 850px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); color: #000; display: flex; flex-direction: column; }
         #portal-root .template-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-        #portal-root .school-name-hd { font-size: 32px; font-weight: 900; color: #0074D9; text-transform: uppercase; letter-spacing: -0.5px; }
-        #portal-root .school-motto-hd { font-size: 16px; color: #fbbc04; font-style: italic; font-weight: 700; }
+        #portal-root .school-logo-img { width: 80px; height: 80px; object-fit: contain; }
+        #portal-root .school-info-center { text-align: center; flex: 1; }
+        #portal-root .school-name-hd { font-size: 28px; font-weight: 800; color: #0074D9; text-transform: uppercase; margin-bottom: 2px; }
+        #portal-root .school-motto-hd { font-size: 14px; color: #fbbc04; font-style: italic; font-weight: 600; }
         #portal-root .student-photo-box { width: 100px; height: 110px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; background: #fff; color: black; }
         #portal-root .header-separator { border-top: 2px solid #000; margin: 8px 0; }
         #portal-root .student-data-grid { display: flex; margin-bottom: 10px; }
@@ -201,6 +203,8 @@ export default function ResultPortal() {
         #portal-root .affective-header-hd { background: #f5f5f5; padding: 4px; text-align: center; font-weight: 700; font-size: 11px; border-bottom: 1px solid #000; }
         #portal-root .affective-row-hd { display: flex; justify-content: space-between; padding: 3px 8px; border-bottom: 1px solid #ddd; font-size: 10px; }
         #portal-root .teacher-box-hd { margin-top: 10px; border: 1px solid #000; padding: 8px; display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 10px; color: black; }
+        #portal-root .teacher-field-hd { font-size: 11px; font-weight: 700; }
+        #portal-root .teacher-val-hd { border-bottom: 1px solid #000; min-height: 18px; font-weight: 400; }
         #portal-root .resumption-hd { text-align: center; font-weight: 800; border: 1px solid #000; padding: 6px; margin-top: 8px; background: #f5f5f5; font-size: 13px; color: black; }
         #portal-root .result-actions { display: flex; gap: 15px; justify-content: center; margin-top: 20px; width: 100%; }
         #portal-root .btn-act { padding: 12px 25px; border-radius: 5px; border: none; cursor: pointer; font-weight: 600; color: white; transition: 0.3s; }
@@ -273,13 +277,13 @@ export default function ResultPortal() {
         <div style={{ width: '100%', maxWidth: '1200px', margin: '0 auto' }}>
           <div className="result-card">
             <div className="template-header">
-              <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-d4iXS1NKPMEhu5xs4Y6kxw0QgWREo0.png" className="school-logo-img" style={{ width: '80px' }} />
+              <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-d4iXS1NKPMEhu5xs4Y6kxw0QgWREo0.png" className="school-logo-img" alt="Logo" />
               <div className="school-info-center">
-                <h2 className="school-name-hd">DYNAGROWTH SCHOOLS</h2>
-                <p className="school-motto-hd">We learn and grow together in love</p>
+                <div className="school-name-hd">DYNAGROWTH SCHOOLS</div>
+                <div className="school-motto-hd">We learn and grow together in love</div>
               </div>
               <div className="student-photo-box">
-                {result.StudentPicture ? <img src={result.StudentPicture} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : "PASSPORT"}
+                {result.StudentPicture ? <img src={result.StudentPicture} style={{width:'100%', height:'100%', objectFit:'cover'}} /> : "PASSPORT"}
               </div>
             </div>
 
@@ -298,7 +302,7 @@ export default function ResultPortal() {
               </div>
               <div className="data-col-right">
                 <table className="attendance-table-hd">
-                  <thead><tr><th colSpan={2}>ATTENDANCE RECORD</th></tr></thead>
+                  <thead><tr><th colSpan={2} style={{textAlign:'center'}}>ATTENDANCE RECORD</th></tr></thead>
                   <tbody>
                     <tr><td>SCHOOL DAYS:</td><td>{result.SchoolDays}</td></tr>
                     <tr><td>DAYS ATTENDED:</td><td>{result.DaysAttended}</td></tr>
@@ -315,69 +319,87 @@ export default function ResultPortal() {
             <table className="hd-table">
               <thead>
                 <tr>
-                  <th style={{ width: '30%' }}>SUBJECTS</th>
-                  <th>C.A (20)</th><th>PRJ (10)</th><th>ACT (10)</th><th>EXM (60)</th><th>TOT (100)</th><th>GRD</th><th>REMARKS</th>
+                  <th style={{textAlign:'left', paddingLeft:'8px', width:'30%'}}>SUBJECTS</th>
+                  <th>C.A<br/>(20)</th>
+                  <th>PRJ<br/>(10)</th>
+                  <th>ACT<br/>(10)</th>
+                  <th>EXM<br/>(60)</th>
+                  <th>TOT<br/>(100)</th>
+                  <th>GRD</th>
+                  <th>REMARKS</th>
                 </tr>
               </thead>
               <tbody>
                 {getSubjects(result.SchoolType).map(sub => (
                   <tr key={sub.key}>
-                    <td style={{ textAlign: 'left', paddingLeft: '8px', fontWeight: 600 }}>{sub.label}</td>
+                    <td style={{textAlign:'left', paddingLeft:'8px', fontWeight:600}}>{sub.label}</td>
                     <td>{result[sub.key + '_CA'] || '-'}</td>
                     <td>{result[sub.key + '_Projects'] || '-'}</td>
                     <td>{result[sub.key + '_ClassActivities'] || '-'}</td>
                     <td>{result[sub.key + '_Exams'] || '-'}</td>
-                    <td style={{ fontWeight: 700 }}>{result[sub.key + '_Total'] || '-'}</td>
-                    <td style={{ fontWeight: 800 }}>{result[sub.key + '_Grade'] || '-'}</td>
-                    <td style={{ fontSize: '9px' }}>{result[sub.key + '_Remarks'] || '-'}</td>
+                    <td>{result[sub.key + '_Total'] || '-'}</td>
+                    <td style={{fontWeight:'700'}}>{result[sub.key + '_Grade'] || '-'}</td>
+                    <td style={{fontSize:'9px'}}>{result[sub.key + '_Remarks'] || '-'}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
 
             <div className="analysis-section-hd">
-              <div style={{ fontWeight: 700 }}>ANALYSIS</div>
-              <div style={{ display: 'flex', gap: '15px' }}>
-                <div><span style={{ color: '#17a2b8', fontWeight: 700 }}>Subjects:</span> <b>{result.SubjectsOffered}</b></div>
-                <div><span style={{ color: '#17a2b8', fontWeight: 700 }}>Obtainable:</span> <b>{result.MarksObtainable}</b></div>
-                <div><span style={{ color: '#17a2b8', fontWeight: 700 }}>Obtained:</span> <b>{result.MarksObtained}</b></div>
-              </div>
+              <div style={{fontWeight:'700'}}>ANALYSIS</div>
+              <div style={{display:'flex', gap:'5px'}}><span style={{color:'#17a2b8', fontWeight:700}}>Subjects Offered:</span><span style={{fontWeight:700}}>{result.SubjectsOffered}</span></div>
+              <div style={{display:'flex', gap:'5px'}}><span style={{color:'#17a2b8', fontWeight:700}}>Marks Obtainable:</span><span style={{fontWeight:700}}>{result.MarksObtainable}</span></div>
+              <div style={{display:'flex', gap:'5px'}}><span style={{color:'#17a2b8', fontWeight:700}}>Marks Obtained:</span><span style={{fontWeight:700}}>{result.MarksObtained}</span></div>
             </div>
-            <div className="analysis-section-hd" style={{ justifyContent: 'flex-end', gap: '20px' }}>
-              <div><span style={{ color: '#17a2b8', fontWeight: 700 }}>Average:</span> <b>{result.StudentAverage}%</b></div>
-              <div><span style={{ color: '#17a2b8', fontWeight: 700 }}>Class Avg:</span> <b>{result.ClassAverage}%</b></div>
-              <div><span style={{ color: '#17a2b8', fontWeight: 700 }}>Highest:</span> <b>{result.HighestAverage}%</b></div>
+            <div className="analysis-section-hd" style={{borderTop:'none'}}>
+              <div></div>
+              <div style={{display:'flex', gap:'5px'}}><span style={{color:'#17a2b8', fontWeight:700}}>Student's Average:</span><span style={{fontWeight:700}}>{result.StudentAverage}%</span></div>
+              <div style={{display:'flex', gap:'5px'}}><span style={{color:'#17a2b8', fontWeight:700}}>Class Average:</span><span style={{fontWeight:700}}>{result.ClassAverage}%</span></div>
+              <div style={{display:'flex', gap:'5px'}}><span style={{color:'#17a2b8', fontWeight:700}}>Highest Average in Class:</span><span style={{fontWeight:700}}>{result.HighestAverage}%</span></div>
             </div>
 
             <div className="bottom-grid-hd">
-              <table className="legend-table-hd">
-                <thead><tr><th>RANGE</th><th>GRADE</th><th>REMARKS</th></tr></thead>
-                <tbody>
-                  {[{r:'90-100', g:'A+', rem:'DISTINCTION'}, {r:'80-89', g:'A', rem:'EXCELLENT'}, {r:'70-79', g:'B+', rem:'VERY GOOD'}, {r:'60-69', g:'B', rem:'GOOD'}, {r:'50-59', g:'C', rem:'MERIT'}, {r:'40-49', g:'D', rem:'FAIR'}, {r:'0-39', g:'F', rem:'FAIL'}].map((row, i) => (
-                    <tr key={i}><td>{row.r}</td><td style={{ fontWeight: 700 }}>{row.g}</td><td>{row.rem}</td></tr>
-                  ))}
-                </tbody>
-              </table>
+              <div className="grade-box-hd">
+                <div style={{fontWeight:'700', fontSize:'11px', marginBottom:'4px'}}>GRADE CATEGORIES</div>
+                <table className="legend-table-hd">
+                  <thead><tr><th>SCORE RANGE</th><th>GRADE</th><th>REMARKS</th><th>FREQUENCY</th></tr></thead>
+                  <tbody>
+                    {[
+                      {r:'90 - 100', g:'A+', rem:'DISTINCTION'},
+                      {r:'80 - 89', g:'A', rem:'EXCELLENT'},
+                      {r:'70 - 79', g:'B+', rem:'VERY GOOD'},
+                      {r:'60 - 69', g:'B', rem:'GOOD'},
+                      {r:'50 - 59', g:'C', rem:'MERIT'},
+                      {r:'40 - 49', g:'D', rem:'FAIR'},
+                      {r:'0 - 39', g:'F', rem:'FAIL'}
+                    ].map((row, idx) => (
+                      <tr key={idx}><td>{row.r}</td><td>{row.g}</td><td>{row.rem}</td><td></td></tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
               <div className="affective-box-hd">
                 <div className="affective-header-hd">AFFECTIVE DOMAIN</div>
                 {affectiveItems.map(item => (
-                  <div key={item.key} className="affective-row-hd">
+                  <div className="affective-row-hd" key={item.key}>
                     <span>{item.label}</span>
-                    <span style={{ fontWeight: 700 }}>{result[item.key + '_Rating'] || '-'}</span>
+                    <span style={{fontWeight:'700'}}>{result[item.key + '_Rating'] || '-'}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             <div className="teacher-box-hd">
-              <div><span style={{ fontWeight: 700, fontSize: '11px' }}>TEACHER:</span><div style={{ borderBottom: '1px solid #000', minHeight: '18px', paddingTop: '4px' }}>{result.FormTeacherName}</div></div>
-              <div><span style={{ fontWeight: 700, fontSize: '11px' }}>COMMENT:</span><div style={{ borderBottom: '1px solid #000', minHeight: '18px', paddingTop: '4px' }}>{result.TeacherComment}</div></div>
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
-                <span style={{ fontWeight: 700, fontSize: '11px' }}>REGISTRAR:</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', borderBottom: '1px solid #000', minHeight: '22px' }}>
-                  <img src="https://i.ibb.co/vrgztW2/signature.png" style={{ height: '22px', display: 'block' }} />
-                  <span style={{ fontSize: '10px', marginLeft: 'auto' }}>{new Date().toLocaleDateString('en-GB')}</span>
+              <div className="teacher-field-hd">FORM TEACHER'S NAME:<div className="teacher-val-hd">{result.FormTeacherName}</div></div>
+              <div className="teacher-field-hd">COMMENT:<div className="teacher-val-hd">{result.TeacherComment}</div></div>
+              <div className="teacher-field-hd">
+                REGISTRAR SIGNATURE:
+                <div className="teacher-val-hd" style={{borderBottom:'none', textAlign:'center'}}>
+                  <img src="https://i.ibb.co/vrgztW2/signature.png" style={{maxHeight:'40px', objectFit:'contain'}} alt="Signature" />
                 </div>
+                Date:
+                <div className="teacher-val-hd">{new Date().toLocaleDateString('en-GB')}</div>
               </div>
             </div>
 
@@ -385,8 +407,8 @@ export default function ResultPortal() {
           </div>
 
           <div className="result-actions no-print">
-            <button className="btn-act" style={{ backgroundColor: '#6c757d' }} onClick={() => setView('search')}>NEW SEARCH</button>
-            <button className="btn-act" style={{ backgroundColor: '#0074D9' }} onClick={() => window.print()}>PRINT REPORT</button>
+            <button onClick={() => setView('search')} className="btn-act" style={{background:'#6c757d'}}>New Search</button>
+            <button onClick={() => window.print()} className="btn-act" style={{background: '#0074D9'}}>Print Report</button>
           </div>
         </div>
       )}
