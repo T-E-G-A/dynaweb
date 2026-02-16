@@ -176,8 +176,8 @@ export default function ResultPortal() {
 
         #portal-root .result-card { background: white; padding: 30px; margin: 20px auto; width: 100%; max-width: 850px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); color: #000; display: flex; flex-direction: column; }
         #portal-root .template-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-        #portal-root .school-name-hd { font-size: 28px; font-weight: 800; color: #0074D9; text-transform: uppercase; }
-        #portal-root .school-motto-hd { font-size: 14px; color: #fbbc04; font-style: italic; font-weight: 600; }
+        #portal-root .school-name-hd { font-size: 32px; font-weight: 900; color: #0074D9; text-transform: uppercase; letter-spacing: -0.5px; }
+        #portal-root .school-motto-hd { font-size: 16px; color: #fbbc04; font-style: italic; font-weight: 700; }
         #portal-root .student-photo-box { width: 100px; height: 110px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; background: #fff; color: black; }
         #portal-root .header-separator { border-top: 2px solid #000; margin: 8px 0; }
         #portal-root .student-data-grid { display: flex; margin-bottom: 10px; }
@@ -370,13 +370,13 @@ export default function ResultPortal() {
             </div>
 
             <div className="teacher-box-hd">
-              <div><span style={{ fontWeight: 700, fontSize: '11px' }}>TEACHER:</span><div style={{ borderBottom: '1px solid #000', minHeight: '18px' }}>{result.FormTeacherName}</div></div>
-              <div><span style={{ fontWeight: 700, fontSize: '11px' }}>COMMENT:</span><div style={{ borderBottom: '1px solid #000', minHeight: '18px' }}>{result.TeacherComment}</div></div>
-              <div>
+              <div><span style={{ fontWeight: 700, fontSize: '11px' }}>TEACHER:</span><div style={{ borderBottom: '1px solid #000', minHeight: '18px', paddingTop: '4px' }}>{result.FormTeacherName}</div></div>
+              <div><span style={{ fontWeight: 700, fontSize: '11px' }}>COMMENT:</span><div style={{ borderBottom: '1px solid #000', minHeight: '18px', paddingTop: '4px' }}>{result.TeacherComment}</div></div>
+              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
                 <span style={{ fontWeight: 700, fontSize: '11px' }}>REGISTRAR:</span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  <img src="https://i.ibb.co/vrgztW2/signature.png" style={{ height: '25px' }} />
-                  <span style={{ fontSize: '10px' }}>{new Date().toLocaleDateString('en-GB')}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', borderBottom: '1px solid #000', minHeight: '22px' }}>
+                  <img src="https://i.ibb.co/vrgztW2/signature.png" style={{ height: '22px', display: 'block' }} />
+                  <span style={{ fontSize: '10px', marginLeft: 'auto' }}>{new Date().toLocaleDateString('en-GB')}</span>
                 </div>
               </div>
             </div>
