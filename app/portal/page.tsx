@@ -157,31 +157,44 @@ export default function ResultPortal() {
 
   return (
     <div className="min-h-screen bg-white font-sans overflow-x-hidden">
-      <style jsx global>{`
+            <style jsx global>{`
         @media print {
           nav, footer, .no-print, .dialog-overlay { display: none !important; }
-          body { background: white !important; margin: 0 !important; padding: 0 !important; }
+          body { background: white !important; margin: 0 !important; padding: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+          
+          @page {
+            size: A4 portrait;
+            margin: 0;
+          }
+
           .print-container { 
             width: 210mm !important; 
             max-width: 210mm !important; 
+            height: 297mm !important;
             padding: 0 !important; 
-            margin: 0 !important; 
+            margin: 0 auto !important; 
+            background: white !important;
           }
+
           .result-card { 
             box-shadow: none !important; 
             border: none !important; 
             width: 210mm !important; 
             height: 297mm !important;
-            padding: 10mm !important;
+            padding: 8mm 12mm !important;
             display: flex !important;
             flex-direction: column !important;
             justify-content: space-between !important;
+            margin: 0 !important;
           }
+
           .termly-report-banner {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
             background-color: #5dade2 !important;
+            color: #000 !important;
           }
+
           table { page-break-inside: avoid; }
           * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
         }
@@ -331,57 +344,57 @@ export default function ResultPortal() {
               </Button>
             </div>
 
-            <Card className="result-card border-none shadow-2xl p-0 overflow-hidden bg-white text-black">
-              <div className="p-8 h-full flex flex-col">
+                        <Card className="result-card border-none shadow-2xl p-0 overflow-hidden bg-white text-black">
+              <div className="h-full flex flex-col">
                 {/* Header */}
-                <div className="flex items-center justify-between mb-4">
-                  <Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-d4iXS1NKPMEhu5xs4Y6kxw0QgWREo0.png" alt="Logo" width={80} height={80} />
+                <div className="flex items-center justify-between mb-2">
+                  <Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/logo-d4iXS1NKPMEhu5xs4Y6kxw0QgWREo0.png" alt="Logo" width={75} height={75} />
                   <div className="text-center flex-1">
                     <h2 className="text-3xl font-black text-[#0074D9] uppercase tracking-tighter">DYNAGROWTH SCHOOLS</h2>
-                    <p className="text-sm font-bold italic text-[#fbbc04]">We learn and grow together in love</p>
+                    <p className="text-[13px] font-bold italic text-[#fbbc04]">We learn and grow together in love</p>
                   </div>
-                  <div className="w-24 h-28 border-2 border-black flex items-center justify-center bg-gray-50 text-[10px] font-bold">
+                  <div className="w-24 h-28 border-2 border-black flex items-center justify-center bg-gray-50 text-[10px] font-bold overflow-hidden">
                     {result.StudentPicture ? <img src={result.StudentPicture} className="w-full h-full object-cover" /> : "PASSPORT"}
                   </div>
                 </div>
 
-                <div className="border-t-2 border-black my-2"></div>
+                <div className="border-t-2 border-black mb-2"></div>
 
                 {/* Student Info */}
-                <div className="flex mb-3">
-                  <div className="w-[70%] grid grid-cols-2 gap-y-1 text-[11px]">
-                    <div className="flex"><span className="font-bold w-24">NAME:</span><span className="border-b border-gray-300 flex-1">{result.Name}</span></div>
-                    <div className="flex"><span className="font-bold w-24">ADMISSION NO:</span><span className="border-b border-gray-300 flex-1">{result.AdmissionNo}</span></div>
-                    <div className="flex"><span className="font-bold w-24">CLASS:</span><span className="border-b border-gray-300 flex-1">{result.Class}</span></div>
-                    <div className="flex"><span className="font-bold w-24">GENDER:</span><span className="border-b border-gray-300 flex-1">{result.Gender}</span></div>
-                    <div className="flex"><span className="font-bold w-24">D.O.B:</span><span className="border-b border-gray-300 flex-1">{result.DateOfBirth}</span></div>
-                    <div className="flex"><span className="font-bold w-24">SESSION:</span><span className="border-b border-gray-300 flex-1">{result.Session}</span></div>
-                    <div className="flex"><span className="font-bold w-24">TERM:</span><span className="border-b border-gray-300 flex-1">{result.Term}</span></div>
-                    <div className="flex"><span className="font-bold w-24">NO. IN CLASS:</span><span className="border-b border-gray-300 flex-1">{result.NoInClass}</span></div>
+                <div className="flex mb-2">
+                  <div className="w-[70%] grid grid-cols-2 gap-x-4 gap-y-0.5 text-[10.5px]">
+                    <div className="flex"><span className="font-bold w-24">NAME:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.Name}</span></div>
+                    <div className="flex"><span className="font-bold w-24">ADMISSION NO:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.AdmissionNo}</span></div>
+                    <div className="flex"><span className="font-bold w-24">CLASS:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.Class}</span></div>
+                    <div className="flex"><span className="font-bold w-24">GENDER:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.Gender}</span></div>
+                    <div className="flex"><span className="font-bold w-24">D.O.B:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.DateOfBirth}</span></div>
+                    <div className="flex"><span className="font-bold w-24">SESSION:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.Session}</span></div>
+                    <div className="flex"><span className="font-bold w-24">TERM:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.Term}</span></div>
+                    <div className="flex"><span className="font-bold w-24">NO. IN CLASS:</span><span className="border-b border-gray-300 flex-1 font-semibold">{result.NoInClass}</span></div>
                   </div>
                   <div className="w-[30%] border border-black ml-4">
                     <table className="w-full text-[10px] border-collapse">
-                      <thead><tr><th colSpan={2} className="bg-gray-100 border-b border-black p-1">ATTENDANCE RECORD</th></tr></thead>
+                      <thead><tr><th colSpan={2} className="bg-gray-100 border-b border-black p-0.5">ATTENDANCE RECORD</th></tr></thead>
                       <tbody>
-                        <tr><td className="p-1 border-b border-black">SCHOOL DAYS:</td><td className="p-1 border-b border-black text-right font-bold">{result.SchoolDays}</td></tr>
-                        <tr><td className="p-1 border-b border-black">DAYS ATTENDED:</td><td className="p-1 border-b border-black text-right font-bold">{result.DaysAttended}</td></tr>
-                        <tr><td className="p-1">DAYS ABSENT:</td><td className="p-1 text-right font-bold">{result.DaysAbsent}</td></tr>
+                        <tr><td className="p-0.5 border-b border-black pl-1">SCHOOL DAYS:</td><td className="p-0.5 border-b border-black text-right pr-1 font-bold">{result.SchoolDays}</td></tr>
+                        <tr><td className="p-0.5 border-b border-black pl-1">DAYS ATTENDED:</td><td className="p-0.5 border-b border-black text-right pr-1 font-bold">{result.DaysAttended}</td></tr>
+                        <tr><td className="p-0.5 pl-1">DAYS ABSENT:</td><td className="p-0.5 text-right pr-1 font-bold">{result.DaysAbsent}</td></tr>
                       </tbody>
                     </table>
                   </div>
                 </div>
 
                 {/* Banner */}
-                <div className="termly-report-banner bg-[#5dade2] text-black py-1.5 text-center font-black rounded-full text-md mb-3 uppercase shadow-sm">
+                <div className="termly-report-banner bg-[#5dade2] text-black py-1.5 text-center font-black rounded-full text-md mb-2 uppercase shadow-sm">
                   TERMLY REPORT FOR {result.Term?.toUpperCase()} {result.Session?.toUpperCase()} ACADEMIC SESSION
                 </div>
 
                 {/* Main Table */}
-                <div className="flex-1 overflow-hidden">
-                  <table className="w-full border-collapse border-2 border-black text-[10.5px]">
+                <div className="flex-grow">
+                  <table className="w-full border-collapse border-2 border-black text-[10px]">
                     <thead>
                       <tr className="bg-gray-50">
-                        <th className="border border-black p-1.5 text-left w-1/3">SUBJECTS</th>
+                        <th className="border border-black p-1 text-left w-1/3">SUBJECTS</th>
                         <th className="border border-black p-0.5 text-center">C.A<br/>(20)</th>
                         <th className="border border-black p-0.5 text-center">PRJ<br/>(10)</th>
                         <th className="border border-black p-0.5 text-center">ACT<br/>(10)</th>
@@ -401,7 +414,7 @@ export default function ResultPortal() {
                           <td className="border border-black p-0.5 text-center">{result[sub.key + '_Exams'] || '-'}</td>
                           <td className="border border-black p-0.5 text-center font-bold">{result[sub.key + '_Total'] || '-'}</td>
                           <td className="border border-black p-0.5 text-center font-black">{result[sub.key + '_Grade'] || '-'}</td>
-                          <td className="border border-black p-0.5 text-center text-[8.5px] leading-tight">{result[sub.key + '_Remarks'] || '-'}</td>
+                          <td className="border border-black p-0.5 text-center text-[8px] leading-tight">{result[sub.key + '_Remarks'] || '-'}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -409,7 +422,7 @@ export default function ResultPortal() {
                 </div>
 
                 {/* Analysis */}
-                <div className="border-x-2 border-b-2 border-black p-1.5 flex justify-between text-[11px]">
+                <div className="border-x-2 border-b-2 border-black p-1 flex justify-between text-[10.5px]">
                   <div className="font-bold">ANALYSIS</div>
                   <div className="flex gap-4">
                     <div><span className="text-[#17a2b8] font-bold mr-1">Subjects Offered:</span><span className="font-bold">{result.SubjectsOffered}</span></div>
@@ -417,31 +430,30 @@ export default function ResultPortal() {
                     <div><span className="text-[#17a2b8] font-bold mr-1">Marks Obtained:</span><span className="font-bold">{result.MarksObtained}</span></div>
                   </div>
                 </div>
-                <div className="border-x-2 border-b-2 border-black p-1.5 flex justify-end gap-6 text-[11px]">
+                <div className="border-x-2 border-b-2 border-black p-1 flex justify-end gap-6 text-[10.5px]">
                   <div><span className="text-[#17a2b8] font-bold mr-1">Student's Average:</span><span className="font-bold">{result.StudentAverage}%</span></div>
                   <div><span className="text-[#17a2b8] font-bold mr-1">Class Average:</span><span className="font-bold">{result.ClassAverage}%</span></div>
                   <div><span className="text-[#17a2b8] font-bold mr-1">Highest Average in Class:</span><span className="font-bold">{result.HighestAverage}%</span></div>
                 </div>
 
                 {/* Bottom Section */}
-                <div className="grid grid-cols-2 gap-4 mt-3">
-                  <div className="border border-black p-1.5">
-                    <h4 className="text-[10px] font-bold mb-1">GRADE CATEGORIES</h4>
-                    <table className="w-full text-[9px] border-collapse border border-black">
-                      <thead className="bg-gray-100"><tr><th className="border border-black p-0.5">SCORE</th><th className="border border-black p-0.5">GRD</th><th className="border border-black p-0.5">REMARKS</th></tr></thead>
+                <div className="grid grid-cols-2 gap-4 mt-2">
+                  <div className="border border-black">
+                    <div className="bg-gray-100 p-0.5 text-center font-bold text-[10px] border-b border-black">GRADE CATEGORIES</div>
+                    <table className="w-full text-[9px] border-collapse">
                       <tbody>
                         {[{r:'90-100', g:'A+', rem:'DISTINCTION'}, {r:'80-89', g:'A', rem:'EXCELLENT'}, {r:'70-79', g:'B+', rem:'VERY GOOD'}, {r:'60-69', g:'B', rem:'GOOD'}, {r:'50-59', g:'C', rem:'MERIT'}, {r:'40-49', g:'D', rem:'FAIR'}, {r:'0-39', g:'F', rem:'FAIL'}].map((row, i) => (
-                          <tr key={i}><td className="border border-black p-0.5 text-center">{row.r}</td><td className="border border-black p-0.5 text-center font-bold">{row.g}</td><td className="border border-black p-0.5 text-center">{row.rem}</td></tr>
+                          <tr key={i}><td className="border-b border-r border-black p-0.5 text-center">{row.r}</td><td className="border-b border-r border-black p-0.5 text-center font-bold">{row.g}</td><td className="border-b border-black p-0.5 text-center">{row.rem}</td></tr>
                         ))}
                       </tbody>
                     </table>
                   </div>
                   <div className="border border-black">
-                    <div className="bg-gray-100 p-1 text-center font-bold text-[10px] border-b border-black">AFFECTIVE DOMAIN</div>
+                    <div className="bg-gray-100 p-0.5 text-center font-bold text-[10px] border-b border-black">AFFECTIVE DOMAIN</div>
                     <div className="p-1">
                       <div className="grid grid-cols-2 gap-x-4">
                         {affectiveItems.map(item => (
-                          <div key={item.key} className="flex justify-between text-[9px] border-b border-gray-100 py-0.5">
+                          <div key={item.key} className="flex justify-between text-[9.5px] border-b border-gray-100 py-0.5">
                             <span>{item.label}</span>
                             <span className="font-bold">{result[item.key + '_Rating'] || '-'}</span>
                           </div>
@@ -452,14 +464,14 @@ export default function ResultPortal() {
                 </div>
 
                 {/* Footer Info */}
-                <div className="border border-black p-1.5 mt-3 grid grid-cols-3 gap-4 text-[10px]">
-                  <div><span className="font-bold block">FORM TEACHER'S NAME:</span><div className="border-b border-black min-h-[16px]">{result.FormTeacherName}</div></div>
-                  <div><span className="font-bold block">COMMENT:</span><div className="border-b border-black min-h-[16px]">{result.TeacherComment}</div></div>
+                <div className="border border-black p-1.5 mt-2 grid grid-cols-3 gap-4 text-[10px]">
+                  <div><span className="font-bold block">FORM TEACHER'S NAME:</span><div className="border-b border-black min-h-[16px] font-semibold">{result.FormTeacherName}</div></div>
+                  <div><span className="font-bold block">COMMENT:</span><div className="border-b border-black min-h-[16px] font-semibold">{result.TeacherComment}</div></div>
                   <div>
                     <span className="font-bold block">REGISTRAR SIGNATURE:</span>
                     <div className="flex items-center gap-2">
                       <img src="https://i.ibb.co/vrgztW2/signature.png" className="h-7 object-contain" alt="Signature" />
-                      <div className="flex-1 text-right">Date: <span className="border-b border-black">{new Date().toLocaleDateString('en-GB')}</span></div>
+                      <div className="flex-1 text-right">Date: <span className="border-b border-black font-semibold">{new Date().toLocaleDateString('en-GB')}</span></div>
                     </div>
                   </div>
                 </div>
