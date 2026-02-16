@@ -157,8 +157,7 @@ export default function ResultPortal() {
 
   return (
     <div className="min-h-screen bg-white font-sans overflow-x-hidden">
-                  <style jsx global>{`
-        /* Global Reset for Printing */
+                        <style dangerouslySetInnerHTML={{ __html: `
         @media print {
           /* Hide everything except the print container */
           body * { visibility: hidden !important; }
@@ -171,13 +170,13 @@ export default function ResultPortal() {
             height: 297mm !important;
             margin: 0 !important;
             padding: 0 !important;
+            background: white !important;
           }
           
           /* Force exact colors and backgrounds */
           * { 
             -webkit-print-color-adjust: exact !important; 
             print-color-adjust: exact !important; 
-            color-adjust: exact !important;
           }
           
           @page {
@@ -188,7 +187,6 @@ export default function ResultPortal() {
           /* Reset potential global CSS conflicts */
           nav, footer, .no-print, button, [role="dialog"], .dialog-overlay { 
             display: none !important; 
-            visibility: hidden !important;
           }
           
           body { 
@@ -215,12 +213,11 @@ export default function ResultPortal() {
           .termly-report-banner-print {
             background-color: #5dade2 !important;
             color: #000 !important;
-            -webkit-print-color-adjust: exact !important;
           }
 
           table { page-break-inside: avoid !important; }
           
-          /* Reset global font overrides from globals.css for the report */
+          /* Reset global font overrides */
           .report-text {
             font-family: Arial, sans-serif !important;
           }
@@ -228,7 +225,7 @@ export default function ResultPortal() {
             font-family: 'ITC Eras', 'Arial Rounded MT Bold', sans-serif !important;
           }
         }
-      `}</style>
+      `}} />
 
       {/* Navigation Bar */}
       <nav className="bg-white shadow-sm fixed top-0 left-0 right-0 w-full z-50 transition-opacity duration-1000">
